@@ -16,6 +16,7 @@
 \alias{that}
 \alias{.super}
 \alias{super}
+\alias{print.instantiatedProtoMethod}
 \title{Prototype object-based programming}
 \description{
 \code{proto} creates or modifies objects of the proto object
