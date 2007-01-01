@@ -1,0 +1,13 @@
+Package: proto
+Version: 0.3-7
+Date: 2006-12-31
+Title: Prototype object-based programming
+Author: Louis Kates, Thomas Petzoldt
+Maintainer: Gabor Grothendieck <ggrothendieck@gmail.com>
+Description: An object oriented system using object-based, also
+	called prototype-based, rather than class-based object 
+	oriented ideas.
+Depends: R (>= 2.4.1)
+Suggests: graph, Rgraphviz
+License: GPL2
+URL: http://code.google.com/p/r-proto/

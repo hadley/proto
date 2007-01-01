@@ -1,0 +1,10 @@
+The optional graphics features of proto
+require an installed version of Rgraphviz.
+
+To pass R CMD CHECK, the following Debian 
+packages are required:
+
+graphviz_dev
+libglib1.2-dev
+
+2005-09-27
