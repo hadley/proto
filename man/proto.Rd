@@ -126,7 +126,7 @@ is that in the first case
 call so that \code{obj$meth(x,y)} and \code{obj$with(meth)(obj,x,y)}
 are equivalent while in the case of \code{obj$with(meth)} the first
 argument is not automatically inserted.  
-code{$.proto} also has a three argument form.  If the third argument
+\code{$.proto} also has a three argument form.  If the third argument
 is present then it should be a list specifying the arguments at which
 the instantiated method is to be evaluated.
 
