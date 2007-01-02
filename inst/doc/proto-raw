@@ -54,6 +54,7 @@ library(proto)
 \section{Introduction} \label{sec:intro}
 
 \subsection[Object Oriented Programming in R]{Object Oriented Programming in \proglang{R}}
+\label{sec:oo}
 
 The \proglang{R} system for statistical computing
 \citep[\url{http://www.R-project.org/}]{Rcore2005} ships with two
@@ -82,6 +83,7 @@ programming in \proglang{R} written only in \proglang{R} leveraging the
 existing facilities of the language rather than adding its own.
 
 \subsection{History}
+\label{sec:history}
 
 The concept of 
 prototype programming
@@ -132,6 +134,7 @@ functionality built into \proglang{R} for the environment class is
 automatically inherited by the \code{proto} class.
 
 \subsection{Overview}
+\label{sec:overview}
 
 It is assumed that the reader has some general
 familiarity with object oriented programming concepts and with
@@ -1048,6 +1051,7 @@ the \pkg{proto} framework.
 \section{Summary} \label{sec:summary}
 
 \subsection{Benefits}
+\label{sec:benefits}
 
 The key benefit of the \pkg{proto} package is to provide 
 access to a style of programming that has not been conveniently
@@ -1085,6 +1089,7 @@ sufficiently powerful to support class-based programming, as well.
 
 
 \subsection{Conclusion}
+\label{sec:conclusion}
 
 The package \pkg{proto} provides an \proglang{S3} subclass of the
 \code{environment} class for constructing and manipulating object
@@ -1098,6 +1103,7 @@ illustrates such usage.  Delegation, cloning traits and general
 manipulation and incremental development are all reviewed by example.
 
 \section*{Computational details}
+\label{sec:compute}
 
 The results in this paper were obtained using \proglang{R} 2.1.0 with
 the package \pkg{proto} 0.3--2. \proglang{R} itself and the
@@ -1112,6 +1118,7 @@ from \url{http://www.graphviz.org}.
 \newpage\mbox{}
 \begin{appendix}
 \section{Frequently Asked Questions}
+\label{sec:faq}
 \begin{enumerate}
 \item{What scope do unqualified object references within methods use?
 
