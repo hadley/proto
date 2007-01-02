@@ -2,16 +2,14 @@ VERSION 0.3-7
 
 o FAQ added as Appendix A of vignette
 
-o str.proto added (code contributed by Tom Short)
+o str.proto added (modified code of Tom Short)
 
-o the class of p$fun is now "instantiatedProtoMethod" (modified from 
-  code contributed by Tom Short)
-
-o print.instantiatedProtoMethod (modified from code contributed by Tom Short)
+o the class of p$fun is now "instantiatedProtoMethod" and 
+  print.instantiatedProtoMethod provided (modified code of Tom Short)
 
 o "$.proto" now has a third argument which, if present, is a list of
-   arguments at which to evaluate the instantiated method.  This is useful
-   for use in sapply/lapply/etc.  See examples in ?proto .
+   arguments at which to evaluate the instantiated method.  Intended for
+   use within sapply/lapply/etc.  See examples in ?proto .
 
 VERSION 0.3-6
 
