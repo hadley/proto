@@ -8,8 +8,10 @@ o the class of p$fun is now "instantiatedProtoMethod" and
   print.instantiatedProtoMethod provided (modified code of Tom Short)
 
 o "$.proto" now has a third argument which, if present, is a list of
-   arguments at which to evaluate the instantiated method.  Intended for
-   use within sapply/lapply/etc.  See examples in ?proto .
+  arguments at which to evaluate the instantiated method.  Intended for
+  use within sapply/lapply/etc.  See examples in ?proto .
+
+o modified DESCRIPTION to point to new home page
 
 VERSION 0.3-6
 
