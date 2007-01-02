@@ -88,7 +88,7 @@ isnot.function <- function(x) ! is.function(x)
     res
 }
 
-# modified from original contributed by Tom Short
+# modified from original by Tom Short
 print.instantiatedProtoMethod <- function(x, ...) {
   # cat("proto method call: ")
   # print(unclass(x))
@@ -97,30 +97,16 @@ print.instantiatedProtoMethod <- function(x, ...) {
   print(eval(body(x)[[1]]))
 }
 
-# contributed by Tom Short
-
-# modified Tom Short
-str.proto <- function(object, max.level = NA, nest.lev = 0,
+# modified from original by Tom Short
+str.proto <- function(object, nest.lev = 0,
     indent.str = paste(rep.int(" ", max(0, nest.lev + 1)), collapse = ".."),
-    comp.str = "$ ", envir = baseenv(), ...) {
+    ...) {
   cat("proto", name.proto(object), "\n")
-  if (is.na(max.level) || nest.lev < max.level) {
-    nam.ob <- ls(object)
-    le <- length(nam.ob)
-    if ((le) == 0) {nam.ob = " "; cat(indent.str, "empty\n")}
-    max.ncnam <- max(nchar(nam.ob, type = "w"))
-    nam.fmt <- format(nam.ob, width = max.ncnam, justify = "left")
-    for (i in seq(len=le)) {
-      cat(indent.str, comp.str, nam.fmt[i], ":", sep = "")
-       envir <- if (typeof(object[[nam.ob[i]]]) == "promise") {
-         structure(object, nam = as.name(nam.ob[i]))
-       }
-      str(object[[nam.ob[i]]], nest.lev = nest.lev + 1, indent.str = paste(indent.str, ".."), envir = envir, ...)
-    }
-  }
+  for(s in capture.output(str(as.list(object), nest.lev = nest.lev, ...))[-1])
+     cat(s, "\n")
   if (is.proto(parent.env(object))) {
     cat(indent.str, "inherits from: ", sep = "")
-    str(parent.env(object), nest.lev = nest.lev + 1)
+    str(parent.env(object), nest.lev = nest.lev + 1, ...)
   }
 }
 
