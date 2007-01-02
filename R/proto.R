@@ -119,8 +119,8 @@ str.proto <- function(object, max.level = NA, nest.lev = 0,
     }
   }
   if (is.proto(parent.env(object))) {
-    cat(indent.str, "inherits from: ")
-    str(parent.env(object), nest.lev = nest.lev)
+    cat(indent.str, "inherits from: ", sep = "")
+    str(parent.env(object), nest.lev = nest.lev + 1)
   }
 }
 
