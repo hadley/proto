@@ -102,11 +102,10 @@ str.proto <- function(object, nest.lev = 0,
     indent.str = paste(rep.int(" ", max(0, nest.lev + 1)), collapse = ".."),
     ...) {
   cat("proto", name.proto(object), "\n")
-  for(s in capture.output(str(as.list(object), nest.lev = nest.lev, ...))[-1])
-     cat(s, "\n")
-  if (is.proto(parent.env(object))) {
-    cat(indent.str, "inherits from: ", sep = "")
-    str(parent.env(object), nest.lev = nest.lev + 1, ...)
-  }
+  Lines <- capture.output(str(as.list(object), nest.lev = nest.lev, ...))[-1]
+  for(s in Lines) cat(s, "\n")
+  if (is.proto(parent.env(object))) cat(indent.str, "inherits from", 
+    name.proto(parent.env(object)), "\n")
 }
+
 
