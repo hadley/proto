@@ -104,7 +104,7 @@ str.proto <- function(object, nest.lev = 0,
   cat("proto", name.proto(object), "\n")
   Lines <- capture.output(str(as.list(object), nest.lev = nest.lev, ...))[-1]
   for(s in Lines) cat(s, "\n")
-  if (is.proto(parent.env(object))) cat(indent.str, "inherits from", 
+  if (is.proto(parent.env(object))) cat(indent.str, "parent:", 
     name.proto(parent.env(object)), "\n")
 }
 
