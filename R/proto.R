@@ -98,14 +98,16 @@ print.instantiatedProtoMethod <- function(x, ...) {
 }
 
 # modified from original by Tom Short
-str.proto <- function(object, nest.lev = 0,
-    indent.str = paste(rep.int(" ", max(0, nest.lev + 1)), collapse = ".."),
-    ...) {
-  cat("proto", name.proto(object), "\n")
-  Lines <- capture.output(str(as.list(object), nest.lev = nest.lev, ...))[-1]
-  for(s in Lines) cat(s, "\n")
-  if (is.proto(parent.env(object))) cat(indent.str, "parent:", 
-    name.proto(parent.env(object)), "\n")
+str.proto <- function(object, max.level = 1, nest.lev = 0, indent.str = 
+   paste(rep.int(" ", max(0, nest.lev + 1)), collapse = ".."), ...) {
+ cat("proto", name.proto(object), "\n")
+ Lines <- capture.output(str(as.list(object), max.level = max.level, 
+    nest.lev = nest.lev, ...))[-1]
+ for(s in Lines) cat(s, "\n")
+ if (is.proto(parent.env(object))) {
+   cat(indent.str, "parent: ", sep = "")
+   str(parent.env(object), nest.lev = nest.lev + 1, ...)
+ }
 }
 
 
