@@ -39,7 +39,8 @@ graph.proto(e = if (exists(".that")) .that else parent.frame(), g = new("graphNE
 
 \note{
   \code{graph.proto} makes use of the \code{Rgraphviz}
-  package and so that must be installed.  On Linux one gotcha
+  package in the \code{BioConductor} repository and so 
+  \code{Rgraphviz} must be installed and loaded.  On Linux one gotcha
   is that you may need to add the
   \code{graphviz} shared library, e.g. to add the directory containing
   the \code{.so} files,
