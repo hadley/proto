@@ -713,7 +713,7 @@ at the contents of one component, \code{oo\$pch}.
 > oo
 \end{Sinput}
 \begin{Soutput}
-<environment: 0x027f7f3c>
+<environment: 0x0281a654>
 attr(,"class")
 [1] "proto"       "environment"
 \end{Soutput}
@@ -1205,48 +1205,63 @@ from \url{http://www.graphviz.org}.
 \begin{enumerate}
 \item{What scope do unqualified object references within methods use?
 
-A \pkg{proto} object is an environment and the defined methods in a 
-\pkg{proto} object have, by default,
-that environment as their parent.  Thus unqualified object references
+A \pkg{proto} object is an environment and that environment
+is the environment
+of the methods in it (by default).
+That is, unqualified object references
 within a \pkg{proto} method look first in the method itself and secondly in the
-\pkg{proto} object in which they are defined.  This is referred to as object
+\pkg{proto} object containing the method.
+This is referred to as object
 scope as opposed to lexical scope or dynamic scope.  It allows simple 
-situations where delegation is not used to use unqualified names.  Thus 
-simple situations remain simple.  Also read 
+situations, where delegation is not used, to use unqualified names.  Thus 
+simple situations remain simple.  
 \citep{Kates2004}
-which discusses the fragile base class problem which 
-relates to this question. Note that if a \pkg{proto} object is created
-via the \code{proto} function with an argument of \code{funEnvir = FALSE}
-then the environment of the function/method will not be reset and so the
-above does not apply.  This can be used for instances when the default
-processing is not desirable.}
+discusses the fragile base class problem which 
+relates to this question. Also note that if a \pkg{proto} object is created
+via the \code{proto} function using an argument of \code{funEnvir = FALSE}
+then the environment of the function/method will not be set as just
+described (but rather it will retain its original environment) so the
+above does not apply.  This can be used for instances when non-default
+processing is desirable.}
 \item{Why does \code{obj\$meth} not return the method, \code{meth}?  
 
-\code{obj\$meth(x, y)} generates a call like \code{meth(obj, x, y)} so 
-\code{obj\$meth} needs to
-return \code{meth} with its first argument, \code{obj}, already inserted.  Since
-calling a method is the most common operation that operation was made
-the simplest. To get the method itself use \code{with(obj, meth)} or
-\code{obj\$with(meth)}.}
+Conceptually \code{obj\$meth} returns \code{meth} but with 
+\code{obj} already inserted into its first argument.
+This is termed an instantiated
+\pkg{proto} 
+method and is of \proglang{S3} class \code{"instantiatedProtoMethod"}.
+
+In contrast, the method itself (i.e. the uninstantited method)
+would not have the first argument already
+inserted.  To return the method itself use \code{with(obj, meth}.
+
+The main advantage of a design that makes the distinction between instantiated 
+and uninstantiated methods is that uninstantiated methods are never
+changed and is that 
+debugging can be more readily carried out (as discussed in the next
+question and answer).
+}
 \item{How does one debug a method?
 
 \pkg{proto} will not dynamically redefine methods.  This has the advantage
-that debug can be used.  Be sure you are referring to the method itself
-and not a call to the method:
+that the ordinary \proglang{R} \code{debug} and \code{undebug} commands can be 
+used.  When using these be sure that to use them with the uninstantiated method
+itself and not the instantiated method derived from it.  That is,
+use:
 \begin{verbatim}
    with(obj, debug(meth))
 \end{verbatim}
 
 and not 
 \begin{verbatim}
-   debug(obj$meth) # wrong!
+   debug(obj$meth) # wrong
 \end{verbatim}
 }
 \item{Is multiple inheritance supported?  
 
-No. proto is just a thin layer on top of \proglang{R} 
+No. \pkg{proto} is just a thin layer on top of \proglang{R} 
 environments and \proglang{R} environments
-provide single inheritance only.  Note that \citep{Kates2004}
+provide single inheritance only.  \citep{Kates2004}
 discusses some ways of handling situations which would otherwise require
 multiple inheritance.}
 \end{enumerate}
