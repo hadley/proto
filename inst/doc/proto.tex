@@ -1,11 +1,3 @@
-% To build the vignette:
-% 1. run Sweave("proto-raw") to create proto-raw.tex
-% 2. build as usual using Rcmd build proto
-% If using batchfiles on Windows one can alternately write at the
-% Windows console:
-%   sweave proto-raw --tex
-%   sweave proto.Rnw
-
 
 
 %\VignetteIndexEntry{proto: An R Package for Prototype Programming}
@@ -729,7 +721,7 @@ at the contents of one component, \code{oo\$pch}.
 > oo
 \end{Sinput}
 \begin{Soutput}
-<environment: 0x02cfe050>
+<environment: 0x02cfdb9c>
 attr(,"class")
 [1] "proto"       "environment"
 \end{Soutput}
@@ -942,7 +934,7 @@ calculation.
 \begin{Schunk}
 \begin{Sinput}
 > longley.ci.boot <- longley.ci$proto({
-+     N <- 2000
++     N <- 1000
 +     ci <- function(.) {
 +         corx <- function(idx) cor(.$x[idx, ])[1, 2]
 +         samp <- replicate(.$N, corx(sample(.$n, replace = TRUE)))
@@ -957,8 +949,8 @@ procedure and the second runs the bootstrap procedure.  Just to check
 that we have performed sufficient bootstrap iterations we rerun it in
 the third line, creating a delegated object on-the-fly running its
 \code{ci} method and then immediately throwing the object away.
-The fact that 8,000
-replications give roughly the same result as 2,000 replications
+The fact that 4,000
+replications give roughly the same result as 1,000 replications
 satisfies us that we have used a sufficient number of replications.
 
 \begin{Schunk}
@@ -973,14 +965,14 @@ satisfies us that we have used a sufficient number of replications.
 \end{Sinput}
 \begin{Soutput}
      2.5%     97.5% 
-0.2413246 0.8228509 
+0.2299395 0.8211854 
 \end{Soutput}
 \begin{Sinput}
-> longley.ci.boot$proto(N = 8000)$ci()
+> longley.ci.boot$proto(N = 4000)$ci()
 \end{Sinput}
 \begin{Soutput}
      2.5%     97.5% 
-0.2551993 0.8298349 
+0.2480999 0.8259276 
 \end{Soutput}
 \end{Schunk}
 
@@ -1210,9 +1202,10 @@ the package \pkg{proto} 0.3--2. \proglang{R} itself and the
 \url{http://CRAN.R-project.org/}.  The GraphViz software is available
 from \url{http://www.graphviz.org}.
 
-
-%\bibliography{proto}
-\input{proto.bbl}
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliography{proto}
+%\input{proto.bbl}
 
 \newpage\mbox{}
 \begin{appendix}

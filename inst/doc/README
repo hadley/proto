@@ -1,6 +1,5 @@
 To build the vignette:
 
-1. run Sweave("proto-raw") to create proto-raw.tex
-2. build as usual using Rcmd build proto
+* vignette building is now straightforward using R CMD build
 
 
