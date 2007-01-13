@@ -602,7 +602,7 @@ plot(g)
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics{test.pdf}
+\includegraphics{proto-dot}
 \caption{\label{fig:proto-dot} Ancestor tree generated using graph.proto. Edges
 point from child to parent.}
 \end{center}
