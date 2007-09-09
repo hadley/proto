@@ -741,7 +741,7 @@ January 1, 1970, and let us also change the plot colors.
 <<proto-smoothing05>>=
 ## change date format of the parent
 oo$tt <- oo$tt + as.Date("1970-01-01")
-oo$xlab <- format(oo.res$tt[1], "%Y")
+oo$xlab <- format(oo.res$tt[1], "\\%Y")
 ## change colors
 oo$col <- c("blue", "red")
 @

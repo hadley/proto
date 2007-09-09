@@ -16,8 +16,10 @@ name.proto <- function(., envir = parent.frame()) {
    }
 }
       
-graph.proto <- function(e = if (exists(".that")) .that else parent.frame(),
+graph.proto <- function(e,
    g = new("graphNEL", edgemode = "directed"), child.to.parent = TRUE) {
+   if (missing(e)) e <- 
+      if (exists(".that")) get(".that") else parent.frame()
    if ( suppressWarnings(! require(graph) || ! require(Rgraphviz)) )
       stop("Error: packages graph and Rgraphviz must be available for loading")
    # add node if its not already in g

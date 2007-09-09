@@ -7,7 +7,7 @@
   proto objects.
 }
 \usage{
-graph.proto(e = if (exists(".that")) .that else parent.frame(), g = new("graphNEL", edgemode = "directed"), child.to.parent = TRUE)
+graph.proto(e, g = new("graphNEL", edgemode = "directed"), child.to.parent = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
