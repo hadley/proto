@@ -1203,6 +1203,7 @@ with this:
    x <- 1
    p$f() # 1
 \end{verbatim}
+}
 \item{Is multiple inheritance supported?  
 
 No. \pkg{proto} is just a thin layer on top of \proglang{R} 

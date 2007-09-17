@@ -721,7 +721,7 @@ at the contents of one component, \code{oo\$pch}.
 > oo
 \end{Sinput}
 \begin{Soutput}
-<environment: 0x02125bf0>
+<environment: 0x0243cbd0>
 attr(,"class")
 [1] "proto"       "environment"
 \end{Soutput}
@@ -1246,13 +1246,13 @@ inserted.  To return the method itself use \code{with(obj, meth}.
 
 The main advantage of a design that makes the distinction between instantiated 
 and uninstantiated methods is that uninstantiated methods are never
-changed and is that 
+changed so
 debugging can be more readily carried out (as discussed in the next
 question and answer).
 }
 \item{How does one debug a method?
 
-\pkg{proto} will not dynamically redefine methods.  This has the advantage
+\pkg{proto} does not dynamically redefine methods.  This has the advantage
 that the ordinary \proglang{R} \code{debug} and \code{undebug} commands can be 
 used.  When using these be sure that to use them with the uninstantiated method
 itself and not the instantiated method derived from it.  That is,
@@ -1264,6 +1264,27 @@ use:
 and not 
 \begin{verbatim}
    debug(obj$meth) # wrong
+\end{verbatim}
+}
+\item{Does \pkg{proto} support lazy evaluation?
+
+Since \code{proto} methods are just \proglang{R} functions they do support
+lazy evaluation; however, the \code{proto} function itself, like the
+\proglang{R} \code{list} function, does evaluate its arguments.  To get the
+effect of lazy evaluation in this case replace any properties with methods.
+For example, contrast this:
+\begin{verbatim}
+   x <- 0
+   p <- proto(f = x) # f is a property of p
+   x <- 1
+   p$f # 0
+\end{verbatim}
+with this:
+\begin{verbatim}
+   x <- 0
+   p <- proto(f = function(.) x) # f is a method of p
+   x <- 1
+   p$f() # 1
 \end{verbatim}
 }
 \item{Is multiple inheritance supported?  
@@ -1281,6 +1302,4 @@ multiple inheritance.}
 \end{appendix}
 
 \end{document}
-
-
 
