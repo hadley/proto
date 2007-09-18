@@ -721,7 +721,7 @@ at the contents of one component, \code{oo\$pch}.
 > oo
 \end{Sinput}
 \begin{Soutput}
-<environment: 0x02505b2c>
+<environment: 0x019dab98>
 attr(,"class")
 [1] "proto"       "environment"
 \end{Soutput}
@@ -1279,6 +1279,7 @@ particularly simple.  Note how we got the equivalent of lazy evaluation
 in the second example where f is a function:
 
 \begin{verbatim}
+# eager evaluation
 x <- 0
 p <- proto(f = x, g = function(.) $x)
 x <- 1
@@ -1286,6 +1287,7 @@ p$f # 0
 
 # versus making f a function
 
+# simulates lazy evaluation
 x <- 0
 p <- proto(f = function(.) x, g = function(.) .$x)
 x <- 1
@@ -1294,9 +1296,29 @@ p$f() # 1
 
 If we cannot guarantee that the proto object has the caller
 as its parent then ensure that the environment of the function
-has not been reset.
+has not been reset.  If no method needs to reference \code{.that}
+or \code{.super} then we can arrange for that using 
+\code{funEnvir=FALSE} as seen here in the second example:
+\begin{verbatim}
 
-For example, in the two equivalent alternatives below \code{g}
+# does not work as intended
+x <- 0
+p <- proto(x = 99)
+q <- p$proto(f = function(.) x, g = function(.) .$x)
+x <- 1
+q$f() # 99
+
+# does work
+x <- 0
+p <- proto(x = 99)
+q <- p$proto(f = function(.) x, g = function(.) .$x, funEnvir = FALSE) 
+x <- 1
+q$f() # 1
+\end{verbatim}
+
+If we wish only to not reset the function used to simulate 
+lazy evaluation then we can do it using either of the 
+two equivalent alternatives below.  \code{g}
 is an ordinary method whose environment is reset to \code{q}
 whereas \code{f} is a function whose environment is not reset and
 serves to provide lazy evaluation for \code{x} found in the caller.
