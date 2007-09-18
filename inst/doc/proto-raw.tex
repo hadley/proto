@@ -721,7 +721,7 @@ at the contents of one component, \code{oo\$pch}.
 > oo
 \end{Sinput}
 \begin{Soutput}
-<environment: 0x0205ea7c>
+<environment: 0x02505b2c>
 attr(,"class")
 [1] "proto"       "environment"
 \end{Soutput}
@@ -1272,14 +1272,36 @@ Since \code{proto} methods are just \proglang{R} functions they do support
 lazy evaluation; however, the \code{proto} function itself
 does evaluate its arguments.  To get the
 effect of lazy evaluation when using the \code{proto}
-function replace any properties that you wish to have evaluated in a 
-lazy manner with functions whose environments are not reset.
+function replace any properties with a function.
+
+If the caller is the parent of the \code{proto} object then its
+particularly simple.  Note how we got the equivalent of lazy evaluation
+in the second example where f is a function:
+
+\begin{verbatim}
+x <- 0
+p <- proto(f = x, g = function(.) $x)
+x <- 1
+p$f # 0
+
+# versus making f a function
+
+x <- 0
+p <- proto(f = function(.) x, g = function(.) .$x)
+x <- 1
+p$f() # 1
+\end{verbatim}
+
+If we cannot guarantee that the proto object has the caller
+as its parent then ensure that the environment of the function
+has not been reset.
+
 For example, in the two equivalent alternatives below \code{g}
 is an ordinary method whose environment is reset to \code{q}
 whereas \code{f} is a function whose environment is not reset and
 serves to provide lazy evaluation for \code{x} found in the caller.
-\begin{verbatim}
 
+\begin{verbatim}
 x <- 0
 p <- proto(x = 99)
 q <- p$proto(g = function(.) .$x) 
@@ -1296,6 +1318,7 @@ q <- proto(f = function(.) x, funEnvir = FALSE,
 x <- 1
 q$f() # 1
 \end{verbatim}
+
 }
 \item{Is multiple inheritance supported?  
 
