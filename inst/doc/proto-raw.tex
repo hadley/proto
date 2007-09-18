@@ -721,7 +721,7 @@ at the contents of one component, \code{oo\$pch}.
 > oo
 \end{Sinput}
 \begin{Soutput}
-<environment: 0x019dab98>
+<environment: 0x01fae280>
 attr(,"class")
 [1] "proto"       "environment"
 \end{Soutput}
@@ -1326,7 +1326,9 @@ serves to provide lazy evaluation for \code{x} found in the caller.
 \begin{verbatim}
 x <- 0
 p <- proto(x = 99)
-q <- p$proto(g = function(.) .$x) 
+# g will use q's y in children of q even if those children
+# override y
+q <- p$proto(y = 25, g = function(.) .that$y + .$x) 
 q[["f"]] <- function(.) x 
 x <- 1
 q$f() # 1
@@ -1336,7 +1338,7 @@ q$f() # 1
 x <- 0
 p <- proto(x = 99)
 q <- proto(f = function(.) x, funEnvir = FALSE, 
-	envir = p$proto(g = function(.) .$x))
+	envir = p$proto(y = 25, g = function(.) .that$y + .$x))
 x <- 1
 q$f() # 1
 \end{verbatim}
