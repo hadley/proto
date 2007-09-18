@@ -1224,7 +1224,7 @@ This is referred to as object
 scope as opposed to lexical scope or dynamic scope.  It allows simple 
 situations, where delegation is not used, to use unqualified names.  Thus 
 simple situations remain simple.  
-\citep{Kates2004}
+\citet{Kates2004}
 discusses the fragile base class problem which 
 relates to this question. Also note that if a \pkg{proto} object is created
 via the \code{proto} function using an argument of \code{funEnvir = FALSE}
@@ -1242,7 +1242,7 @@ method and is of \proglang{S3} class \code{"instantiatedProtoMethod"}.
 
 In contrast, the method itself (i.e. the uninstantited method)
 would not have the first argument already
-inserted.  To return the method itself use \code{with(obj, meth}.
+inserted.  To return the method itself use \code{with(obj, meth)}.
 
 The main advantage of a design that makes the distinction between instantiated 
 and uninstantiated methods is that uninstantiated methods are never
@@ -1346,8 +1346,8 @@ q$f() # 1
 
 No. \pkg{proto} is just a thin layer on top of \proglang{R} 
 environments and \proglang{R} environments
-provide single inheritance only.  \citep{Kates2004}
-discusses some ways of handling situations which would otherwise require
+provide single inheritance only.  \citet{Kates2004}
+discuss some ways of handling situations which would otherwise require
 multiple inheritance.}
 \end{enumerate}
 \newpage{}
