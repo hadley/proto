@@ -1,17 +1,15 @@
 # John Verzani's gWidgets example found here:
 # http://wiener.math.csi.cuny.edu/pmg/gWidgets/Examples/ProtoExample-II-ex.html
 
-  library(gWidgets)
-  options("guiToolkit"="RGtk2")
-  ## options("guiToolkit"="tcltk")
-  ##options("guiToolkit"="rJava")
-  ## options("guiToolkit"="RwxWidgets")
+library(gWidgets)
+options("guiToolkit"="RGtk2")
 
-  
-  require(proto)
+require(proto)
+
 
 BasicGUI = proto(
   new = function(., message = "Basic GUI",...) {
+    ## pre proto-0.4-0
 #    .$proto(message=message, 
 #            props=list(),widgetList=list(), widgets = list(),...)
      .$proto(message=message,...)
@@ -46,10 +44,10 @@ BasicGUI = proto(
     ## for these we take advantage of the fact that when we call
     ## the handlers this way the "." gets passed in via the first argument
     cancelButton = gbutton("cancel", cont=bg,  
-      action = list(self=., super=parent.env(.)),
+    action = list(self=., super=super()),
       handler = .$cancelButtonHandler)
     okButton = gbutton("ok", cont=bg, 
-      action = list(self=., super=parent.env(.)),
+       action = list(self=., super=super()),
       handler = .$okButtonHandler)
   },
   ## Notice, the signature includes the initial "."
@@ -72,6 +70,7 @@ BasicGUI = proto(
   widgets = list()
   )
 
+
   BGTest = BasicGUI$new(message="Basic Widget Test",
   widgetList = list(
     edit = list(type="gedit",text="starting text"),
@@ -86,14 +85,13 @@ BGTest$okButtonHandler = function(.,handler,...) {
 }
 BGTest$Show()  ## show the widget
 
-
 Parent = BasicGUI$new(message="Just a parent, not shown")
-MainChild = BasicGUI$new(message="Plot a histogram",
+MainChild = Parent$new(message="Plot a histogram",
   makeBody = function(., container) {
     glabel("Plot a histogram of a variable", cont=container)
     g1 = ggroup(cont=container)
     tbl = glayout(cont=g1)
-    tbl[1,1] = "data set:"
+    tbl[1,1] = "numeric vector:"
     tbl[1,2] <- (.$widgets[[1]] = gedit("", cont=tbl))
     ## others
     visible(tbl) <- TRUE                # RGtk2
@@ -131,6 +129,11 @@ okButtonHandler = function(.,h,...) {
 }
 
   )
+
+  ## add defaults
+  Parent$props$main="Main title"
+  Parent$props$xlab = "xlab"
+
 
 ## Now show the parent
 MainChild$Show()
