@@ -1,3 +1,18 @@
+VERSION 0.4-0
+
+o proto function evaluates ... lazily
+
+o clone function to lazily copy proto objects
+
+o expanded form of $.proto
+
+o new that() and super() functions (.that and .super will be deprecated)
+
+o two new demos in demo directory
+
+o documentation revisions
+
+o updated THANKS file
 
 VERSION 0.3-8
 

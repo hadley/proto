@@ -1,17 +1,40 @@
-proto <- function (. = parent.env(envir), expr = {}, envir = 
+# copy objects in e to f without forcing promises.
+# if expr is missing then promises are copied to promises that have 
+#  the same expression but are evaluated with respect to environment g.
+# if expr is specified then it should be an expression in terms of variable_ 
+#  that is applied to when the promise is evaluated.
+# default expr is quote(_variable) if envir is missing or FALSE and
+#  an expression which resets function environments to envir otherwise.
+clone <- function(e, f = new.env(parent = parent.env(e)), 
+	g = parent.frame(), envir = f, expr, ...) {
+	if (missing(expr)) {
+	   expr <- if (identical(envir, FALSE)) quote(variable_) 
+	   else quote({
+		tmp_ <- variable_
+		if (is.function(tmp_)) environment(tmp_) <- envir
+		tmp_
+	   })
+	}
+	for(n in ls(e, ...)) {
+	   ss2 <- do.call(substitute, list(expr, list(variable_ = as.name(n))))
+	   ss1 <- do.call(substitute, list(ss2, e))
+	   ss <- do.call(substitute, list(ss1, list(envir = envir)))
+	   do.call("delayedAssign", list(n, ss, assign.env = f, eval.env = g))
+        }
+	if (is.proto(e)) f <- as.proto(f)
+	f
+}
+
+proto <- function (parent = parent.env(envir), expr = {}, envir = 
 		new.env(parent = parent.frame()), ..., funEnvir = envir) {
-    parent.env(envir) <- .
-    as.proto.environment(envir)  # must do this before eval(...)
-    # moved eval after for so that ... always done first
-    # eval(substitute(eval(quote({ expr }))), envir)
-    dots <- list(...); names <- names(dots)
-    for (i in seq(length = length(dots))) { 
-      assign(names[i], dots[[i]], env = envir)
-      if (!identical(funEnvir, FALSE) && is.function(dots[[i]])) 
-        environment(envir[[names[i]]]) <- funEnvir
-    }
-    eval(substitute(eval(quote({ expr }))), envir)
-    if (length(dots)) as.proto.environment(envir) else envir
+    parent.env(envir) <- parent
+    f <- function(){}
+    formals(f) <- eval(substitute(as.pairlist(alist(...))))
+    body(f) <- substitute(environment())
+    # environment(f) <- parent
+    clone(e = f(), f = envir, g = parent.frame(), envir = funEnvir)
+    if (!missing(expr)) eval(substitute(eval(quote({ expr }))), envir)
+    as.proto(envir)
 }
 
 as.proto <- function(x, ...) UseMethod("as.proto")
@@ -20,25 +43,9 @@ as.proto.environment <- function(x, ...) {
 	assign(".super", parent.env(x), env = x)
 	structure(x, class = c("proto", "environment"))
 }
+
 as.proto.proto <- function(x, ...) x
-as.proto.list <- function(x, envir, parent, all.names = FALSE, ..., 
-	funEnvir = envir, SELECT = function(x) TRUE) {
-       if (missing(envir)) {
-		if (missing(parent)) parent <- parent.frame()
-		envir <- if (is.proto(parent)) 
-			parent$proto(...) 
-		else 
-			proto(parent, ...)
-       }
-       for(s in names(x))
-          if (SELECT(x[[s]])) {
-             assign(s, x[[s]], env = envir)
-             if (is.function(x[[s]]) && !identical(funEnvir, FALSE)) 
-		environment(envir[[s]]) <- funEnvir
-          }
-       if (!missing(parent)) parent.env(envir) <- parent
-       as.proto.environment(envir)  # force refresh of .that and .super
-}
+as.proto.list <- function(x, ...) envir <- do.call(proto, c(x, ...))
 
 # "$.proto" <- function(this, x) {
 #    inh <- substr(x,1,2) != ".."
@@ -54,6 +61,44 @@ as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
 #    res
 # }
 
+is.proto <- function(x) inherits(x, "proto")
+
+#with.default seems to work just as well
+#with.proto <- function(data, expr, ...)
+#   eval.parent(substitute(eval(substitute(expr), data)))
+
+"$.proto" <- function (this, x, ..., firstArg = this, list) {
+    # remember that x is the NAME of object, not object
+    inh <- substr(x, 1, 2) != ".."
+    getx <- get(x, env = this, inherits = inh)
+    is.function <- is.function(getx)
+    if (is.function && nargs() > 2) {
+	# need a double substitute for firstArg=this
+	if (missing(list)) {
+		if (identical(firstArg, this))
+			return(eval.parent(substitute(getx(this, ...))))
+		else
+			return(eval.parent(substitute(getx(firstArg, ...))))
+	} else return(do.call(getx, c(firstArg, list)))
+    }
+    L <- base::list(x = x, this = this, inh = inh)
+    is.that <- match(deparse(substitute(this)),c(".that",".super"),nomatch=0)>0
+    s <- if (is.function && !is.that)
+        substitute(function(...) get(x, env = this, inherits = inh)(this, 
+            ...), L)
+    else substitute(get(x, env = this, inherits = inh), L)
+    # res <- eval(s, base::list(this = this, x = x, inh = inh), p)
+    p <- parent.frame()
+    res <- eval(s, L, p)
+    if (is.function) {
+        environment(res) <- p
+        class(res) <- c("instantiatedProtoMethod", "function")
+	attr(res, "this") <- this
+	# if (!missing(args)) res <- do.call(res, args, envir = p)
+    }
+    res
+}
+
 "$<-.proto" <- function(this,s,value) { 
         if (s == ".super") parent.env(this) <- value
 	if (is.function(value))  environment(value) <- this
@@ -61,40 +106,13 @@ as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
 	this
 }
 
-is.proto <- function(x) inherits(x, "proto")
-isnot.function <- function(x) ! is.function(x)
-
-#with.default seems to work just as well
-#with.proto <- function(data, expr, ...)
-#   eval.parent(substitute(eval(substitute(expr), data)))
-
-"$.proto" <- function (this, x, args) {
-    inh <- substr(x, 1, 2) != ".."
-    p <- parent.frame()
-    is.function <- is.function(get(x, env = this, inherits = inh))
-    is.that <- match(deparse(substitute(this)), c(".that", ".super"), 
-        nomatch = 0)
-    s <- if (is.function && !is.that) 
-        substitute(function(...) get(x, env = this, inherits = inh)(this, 
-            ...))
-    else substitute(get(x, env = this, inherits = inh))
-    res <- eval(s, list(this = this, x = x, inh = inh), p)
-    if (is.function && !is.that) {
-        environment(res) <- p
-        class(res) <- c("instantiatedProtoMethod", "function")
-	attr(res, "this") <- this
-	if (!missing(args)) res <- do.call(res, args, envir = p)
-    }
-    res
-}
-
 # modified from original by Tom Short
 print.instantiatedProtoMethod <- function(x, ...) {
   # cat("proto method call: ")
   # print(unclass(x))
-  cat("proto method (instantiated with ", name.proto(attr(x, "this")), 
-    "): ", sep = "")
-  print(eval(body(x)[[1]]))
+  cat("proto method (instantiated with ", name.proto(attr(x, "this")), "): ", sep = "")
+  # print(eval(body(x)[[1]]))
+  str(eval(body(x)[[1]]))
 }
 
 # modified from original by Tom Short
@@ -110,4 +128,8 @@ str.proto <- function(object, max.level = 1, nest.lev = 0, indent.str =
  }
 }
 
+that <- function(n = 1) attr(sys.function(n+1), "that")
+that <- function() parent.env(parent.frame())
+super <- function(n = 1) parent.env(that(n))
+super <- function() parent.env(parent.env(parent.frame()))
 

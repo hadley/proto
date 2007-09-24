@@ -27,6 +27,7 @@ proto(. = parent.env(envir), expr = {}, envir =
 		new.env(parent = parent.frame()), ..., funEnvir )
 \method{as.proto}{list}(x, envir, parent, all.names = FALSE, ..., 
 	funEnvir = envir, SELECT = function(x) TRUE)
+\method{$}{proto}(this, x, ..., firstArg = this, list)
 isnot.function(x)
 }
 
@@ -51,47 +52,62 @@ isnot.function(x)
     its parent is coerced to \code{parent}.}
   \item{\dots}{for \code{proto} these are components to be embedded in 
     the new object.  For \code{as.proto.list} these are arguments to
-    pass to \code{proto} in the case that a new object is created.}
+    pass to \code{proto} in the case that a new object is created.
+    for \code{$.proto} the method is evaluated at these arguments.}
   \item{SELECT}{a function which given an object returns \code{TRUE} or
     \code{FALSE} such that only those for which \code{SELECT} returns
     \code{TRUE} are kept in the returned \code{proto} object.}
   \item{all.names}{only names not starting with a dot are copied unless
     all.names is TRUE.}
+  \item{firstArg}{The first argument, normally \code{this} passed to the
+    method.}
+  \item{list}{list whose components are an alternate way to specifying 
+    arguments in place of \code{\dots}}.
 }
 
 \details{
 The \code{proto} class
-is defined to be a subclass of the R \code{environment} class.
+is an \code{S3} subclass of the R \code{environment} class.
 In particular this implies that \code{proto} objects have
 single inheritance and mutable state as all environments do.
-\code{proto} creates or modifies objects of this class.  It inserts
-all variables and functions in \code{expr} and then in \code{\dots}
-into \code{envir} setting the parent to \code{.}.  The environment of
-all  functions inserted into the environment are set to that environment.
-All such functions should 
+The \code{proto} function creates and modifies objects of 
+the \code{proto} class.  It (1) sets the parent of 
+code{envir} to \code{parent}, (2) evaluates \code{expr} 
+in the \code{envir} environment and (3) lazily evaluates the
+arguments in \code{\dots} in the parent environment resetting
+the environment of any functions (where the resetting is also
+done lazily).  All such functions are known as methods and should 
 have the receiver object as their first argument.
 Conventionally this is \code{.} (i.e. a dot).  
 Also \code{.that} and \code{.super}
-variables are added to the environment.  These 
-point to the object itself and its parent.
+variables are added to the environment \code{envir}.  These 
+point to the object itself and its parent, respectively.
 Note that \code{proto} can be used as a method and overridden
 like any other method.  This allows objects to have object-specific
-versions of \code{proto}.
+versions of \code{proto}.  There also exist \code{that()} and \code{super()}
+functions which have the same purpose as \code{.that} and \code{.super}
+but do not rely on the \code{.that} and \code{.super}.  \code{.that},
+\code{.super}, \code{that()} and \code{super()} can only be used within
+methods that have their object as their environment.  In addition \code{that()}
+and \code{super()} may only be used within the top level of such methods (
+and not within functions within such methods).
 
 \code{as.proto} is a generic with methods for environments, proto objects
 and lists.
 
-\code{as.proto.list} copies inserts a copy of each component, \code{el},
+\code{as.proto.list} copies each component, \code{el},
 of the list \code{x} into the the environment or proto object
-\code{envir} for which \code{FUN(el)} is \code{TRUE}.  Also, components
+\code{envir} for which \code{FUN(el)} is \code{TRUE}.  Components
 whose name begins with a dot, \code{.}, are not copied unless 
 \code{all.names} is \code{TRUE} (and \code{FUN(el)} is \code{TRUE}).
 The result is a proto object whose parent is \code{parent}.
 If \code{envir} is omitted a new object is created through a call to
 \code{proto} with \code{parent} and \code{\dots} as arguments.
-If \code{parent} is also omitted then the current environment is used.
+If \code{parent} is also omitted then the current environment is the
+parent.
 Note that if \code{parent} is a proto object with its own \code{proto}
-method then this call to \code{proto} will be overridden by that method.
+method then the \code{proto} method of the parent will override the
+one described here in which case the functionality may differ.
 
 The utility function \code{isnot.function} is provided for use with
 \code{as.proto.list} to facilitate the copying of variables only.
@@ -112,9 +128,10 @@ method with the first, i.e. proto slot, already filled in.
 It is normally used in the
 context of a call to a method, e.g. \code{obj$meth(x,y)}.
 There also exists \code{print.instantiatedProtoMethod} 
-for printing such objects.  Note that an instantiated proto method
-is not the same as a proto method.  The first has its first slot 
-filled in whereas the second does not.
+for printing such objects.  Be aware that an instantiated proto method
+is not the same as a proto method.  An instantiated proto method
+has its first argument filled (with the receiver object)
+whereas the first argument of a proto method does not.
 If it is desired to actually return the method as a value not
 in the context of a call then use the form 
 \code{obj$with(meth)} or \code{obj[[meth]]} 
@@ -127,19 +144,19 @@ is that in the first case
 call so that \code{obj$meth(x,y)} and \code{obj$with(meth)(obj,x,y)}
 are equivalent while in the case of \code{obj$with(meth)} the first
 argument is not automatically inserted.  
-\code{$.proto} also has a three argument form.  If the third argument
-is present then it should be a list specifying the arguments at which
-the instantiated method is to be evaluated.
 
+\code{$.proto} also has a multiple argument form.  If three or more arguments
+are present then they specify the arguments at which
+the instantiated method is to be evaluated.  In this form the receiver
+object must be specified explicitly.  This form can be used in situations
+where the highest speed is required such as in the inner loops of computations.
 
-
-The forms \code{.that$meth} and 
-\code{.super$meth}
+The forms \code{.that$meth} and \code{.super$meth}
 are special and should only be used within methods.  \code{.that}
 refers to the object in which the current method is located
 and \code{.super} refers to the parent of \code{.that}.  In both
 cases the receiver object must be 
-specified as the first argument --- the receiver
+specified as the first argument -- the receiver
 is not automatically inserted
 as with other usages of \code{$}.
 
@@ -163,11 +180,11 @@ return proto objects.  \code{isnot.function} returns a logical value.
 
 \note{
 proto methods can be used with environments but some care must be
-taken.  These can be avoided by always using proto objects in these
+taken.  Problems can be avoided by always using proto objects in these
 cases.  This note discusses the pitfalls of using environments for
 those cases where such interfacing is needed.
 
-Note that if \code{e} is an environment then \code{e$x} will only
+If \code{e} is an environment then \code{e$x} will only
 search for \code{x} in \code{e} and no further whereas if \code{e}
 were a proto object its ancestors will be searched as well.
 For example,
@@ -190,12 +207,12 @@ not a proto object (unless the global environment is coerced to
 a proto object) and therefore be faced with the search situation
 discussed above.  One solution is to
 create an empty root object between the global environment
-and \code{obj} like this \code{Root <- obj$.super <- proto(.GlobalEnv)}
+and \code{obj} as in this diagram \code{Root <- obj$.super <- proto(.GlobalEnv)}
 where \code{Root} is the root object.
 Now \code{.super} references will reference \code{Root}, which is
 a proto object so search will occur as expected.  \code{proto}
 does not provide such a root object automatically
-but the user can create one easily as shown, if desired.
+but the user can create one easily, if desired.
 
 Although not recommended, it possible to coerce the global environment
 to a proto object by issuing the command
@@ -258,7 +275,32 @@ o2d$a # a is changed since a not found in o2d so found in o2
 
 p <- proto(a = 0, incr = function(., x) .$a <- .$a + x)
 pc <- p$proto(a = 100)
-sapply(list(p, pc), "$.proto", "incr", list(x = 7))
+
+p$incr(7)
+p$incr(x=7)
+p$a
+# cannot use x=7 in "$.proto" form since x="incr" but these two are ok:
+"$.proto"(p, "incr", 7)
+"$.proto"(p, "incr", list = list(x = 7))
+
+# $.proto form is useful in sapply/lapply
+sapply(list(p, pc), "$.proto", "incr", 7)
+
+# q is cloned before promises in p are forced
+p <- proto(append = function(., x) .$L[[x]] <- x, L = new.env())
+q <- p$clone()
+p$append("A")
+as.list(p$L)
+q$append("B")
+as.list(q$L)
+
+# promises in p are forced before q is cloned
+p <- proto(append = function(., x) .$L[[x]] <- x, L = new.env())
+p$append("C")
+as.list(p$L)
+q <- p$clone()
+q$append("D")
+as.list(q$L)
 
 }
 \keyword{programming}

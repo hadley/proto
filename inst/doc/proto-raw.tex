@@ -721,7 +721,7 @@ at the contents of one component, \code{oo\$pch}.
 > oo
 \end{Sinput}
 \begin{Soutput}
-<environment: 0x01fbe2a8>
+<environment: 0x01fbd8c8>
 attr(,"class")
 [1] "proto"       "environment"
 \end{Soutput}
@@ -1266,6 +1266,13 @@ and not
    debug(obj$meth) # wrong
 \end{verbatim}
 }
+\item{Is multiple inheritance supported?  
+
+No. \pkg{proto} is just a thin layer on top of \proglang{R} 
+environments and \proglang{R} environments
+provide single inheritance only.  \citep{Kates2004}
+discusses some ways of handling situations which would otherwise require
+multiple inheritance.}
 \item{Does \pkg{proto} support lazy evaluation?
 
 Since \code{proto} methods are just \proglang{R} functions they do support
@@ -1342,15 +1349,7 @@ q <- proto(f = function(.) x, funEnvir = FALSE,
 x <- 1
 q$f() # 1
 \end{verbatim}
-
 }
-\item{Is multiple inheritance supported?  
-
-No. \pkg{proto} is just a thin layer on top of \proglang{R} 
-environments and \proglang{R} environments
-provide single inheritance only.  \citep{Kates2004}
-discusses some ways of handling situations which would otherwise require
-multiple inheritance.}
 \end{enumerate}
 \newpage{}
 \section{Reference Card}
