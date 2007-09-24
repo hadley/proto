@@ -7,7 +7,7 @@ Maintainer: Gabor Grothendieck <ggrothendieck@gmail.com>
 Description: An object oriented system using object-based, also
 	called prototype-based, rather than class-based object 
 	oriented ideas.
-Depends: R (>= 2.3.1)
+Depends: R (>= 2.6.0)
 Suggests: graph, Rgraphviz
 License: GPL2
 URL: http://code.google.com/p/r-proto/
