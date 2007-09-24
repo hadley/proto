@@ -67,25 +67,26 @@ is.proto <- function(x) inherits(x, "proto")
 #with.proto <- function(data, expr, ...)
 #   eval.parent(substitute(eval(substitute(expr), data)))
 
-"$.proto" <- function (this, x, ..., firstArg = this, list) {
+"$.proto" <- function (this, x, ..., receiver = this, list) {
     # remember that x is the NAME of object, not object
     inh <- substr(x, 1, 2) != ".."
     getx <- get(x, env = this, inherits = inh)
     is.function <- is.function(getx)
     if (is.function && nargs() > 2) {
-	# need a double substitute for firstArg=this
+	# need a double substitute for receiver=this
 	if (missing(list)) {
-		if (identical(firstArg, this))
+		if (identical(receiver, this))
 			return(eval.parent(substitute(getx(this, ...))))
 		else
-			return(eval.parent(substitute(getx(firstArg, ...))))
-	} else return(do.call(getx, c(firstArg, list)))
+			return(eval.parent(substitute(getx(receiver, ...))))
+	} else return(do.call(getx, c(receiver, list)))
     }
     L <- base::list(x = x, this = this, inh = inh)
     is.that <- match(deparse(substitute(this)),c(".that",".super"),nomatch=0)>0
     s <- if (is.function && !is.that)
-        substitute(function(...) get(x, env = this, inherits = inh)(this, 
-            ...), L)
+        substitute(function(..., receiver) {
+		if (missing(receiver)) receiver <- this
+		get(x, env = this, inherits = inh)(receiver, ...)}, L)
     else substitute(get(x, env = this, inherits = inh), L)
     # res <- eval(s, base::list(this = this, x = x, inh = inh), p)
     p <- parent.frame()
