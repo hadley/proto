@@ -1,10 +1,18 @@
+Note that there are further ReleaseNotes.txt accessible
+within the source distribution in
+   inst/ReleaseNotes.txt 
+and from within R via:
+   file.show(system.file("ReleaseNotes.txt", package = "proto"))
+
+===
+
 VERSION 0.4-0
 
 o proto function evaluates ... lazily
 
 o clone function to lazily copy proto objects
 
-o expanded form of $.proto
+o $.proto has a new optional receiver argument
 
 o new that() and super() functions (.that and .super will be deprecated)
 
