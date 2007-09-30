@@ -5,15 +5,31 @@
 #  that is applied to when the promise is evaluated.
 # default expr is quote(_variable) if envir is missing or FALSE and
 #  an expression which resets function environments to envir otherwise.
-clone <- function(e, f = new.env(parent = parent.env(e)), 
+
+# used in cloning
+resetIfFun <- function(v, e) {
+   if (is.function(v)) environment(v) <- e
+   v
+}
+
+clone2 <- function(e, f = new.env(parent = parent.env(e)), 
 	g = parent.frame(), envir = f, expr, ...) {
 	if (missing(expr)) {
 	   expr <- if (identical(envir, FALSE)) quote(variable_) 
-	   else quote({
-		tmp_ <- variable_
-		if (is.function(tmp_)) environment(tmp_) <- envir
-		tmp_
-	   })
+	   else quote(resetIfFun(variable_, envir)) 
+	}
+	for(n in ls(e, ...)) {
+		do.call("delayedAssign", list(n, expr, assign.env = f))
+	}
+}
+
+# e is source environment, f is target environment
+# g is eval.env and envir is funEnvir
+clone2 <- function(e, f = new.env(parent = parent.env(e)), 
+	g = parent.frame(), envir = f, expr, ...) {
+	if (missing(expr)) {
+	   expr <- if (identical(envir, FALSE)) quote(variable_) 
+	   else quote(resetIfFun(variable_, envir)) 
 	}
 	for(n in ls(e, ...)) {
 	   ss2 <- do.call(substitute, list(expr, list(variable_ = as.name(n))))
@@ -22,6 +38,12 @@ clone <- function(e, f = new.env(parent = parent.env(e)),
 	   do.call("delayedAssign", list(n, ss, assign.env = f, eval.env = g))
         }
 	if (is.proto(e)) f <- as.proto(f)
+	# print(ls(f))
+	# for(n in ls(f)) {
+	#  cat(n, ":\n")
+	#   print(do.call(substitute, list(as.name(n), f)))
+	#}
+	# browser()
 	f
 }
 
@@ -32,7 +54,7 @@ proto <- function (parent = parent.env(envir), expr = {}, envir =
     formals(f) <- eval(substitute(as.pairlist(alist(...))))
     body(f) <- substitute(environment())
     # environment(f) <- parent
-    clone(e = f(), f = envir, g = parent.frame(), envir = funEnvir)
+    clone2(e = f(), f = envir, g = parent.frame(), envir = funEnvir)
     if (!missing(expr)) eval(substitute(eval(quote({ expr }))), envir)
     as.proto(envir)
 }
@@ -45,7 +67,7 @@ as.proto.environment <- function(x, ...) {
 }
 
 as.proto.proto <- function(x, ...) x
-as.proto.list <- function(x, ...) envir <- do.call(proto, c(x, ...))
+as.proto.list <- function(x, ...) do.call(proto, c(x, ...))
 
 # "$.proto" <- function(this, x) {
 #    inh <- substr(x,1,2) != ".."
@@ -128,6 +150,13 @@ str.proto <- function(object, max.level = 1, nest.lev = 0, indent.str =
    str(parent.env(object), nest.lev = nest.lev + 1, ...)
  }
 }
+
+# needed to work around bug in R in which promises are not
+# evaluated (but should be) by as.list
+as.list.environment <- function(x, ...) {
+	sapply(ls(x, ...), get, x, simplify = FALSE)
+}
+
 
 that <- function(n = 1) attr(sys.function(n+1), "that")
 that <- function() parent.env(parent.frame())
