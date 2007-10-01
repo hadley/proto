@@ -54,7 +54,7 @@ proto <- function (parent = parent.env(envir), expr = {}, envir =
     formals(f) <- eval(substitute(as.pairlist(alist(...))))
     body(f) <- substitute(environment())
     # environment(f) <- parent
-    clone2(e = f(), f = envir, g = parent.frame(), envir = funEnvir)
+    clone2(e = f(), f = envir, g = parent.frame(), envir = funEnvir, all = TRUE)
     if (!missing(expr)) eval(substitute(eval(quote({ expr }))), envir)
     as.proto(envir)
 }
@@ -67,7 +67,7 @@ as.proto.environment <- function(x, ...) {
 }
 
 as.proto.proto <- function(x, ...) x
-as.proto.list <- function(x, ...) do.call(proto, c(x, ...))
+as.proto.list <- function(x, ..., envir = parent.frame()) do.call(proto, c(x, ...), envir = envir)
 
 # "$.proto" <- function(this, x) {
 #    inh <- substr(x,1,2) != ".."
