@@ -6,32 +6,18 @@ Guide to version 0.4-0 of proto
 The proto function now evaluates its ... argument lazily.
 This together with a lazy cloning routine, clone, allows the
 user to use a proto object as a template for other objects.
-For example, in the code below gwindow is the gWidgets
-function to create a new window and gbutton is the function
-to create a button in the indicated container.
 
-We create a proto object p which defines a container
-embodying a new window and a go method which places a button
-in it.  Because of lazy evaluation gwindow() is not run
-until container is accessed and that does not occur until go
-is run.   RAther than run the code associated with container
-when p is defined a promise to later define it is stored in
-container.  The promise is "forced", i.e. evaluated, the
-first time it is accessed.
+For example, in the code below 
+- gwindow is the gWidgets function to create a new window and 
+- gbutton is the function to create a button in indicated container.
 
-The line defining q creates a second proto object which is
-the same as the first.  The copying is lazy in that it does
-not force any promises but just creates duplicate promises
-in q.
+We create a proto object p which defines 
+- a container, container, embodying a new window and 
+- a method, go, which places a button in it.  
 
-When we finally run p$go() this forces the promise in
-p$container causing a window to be created and then a button
-is created in it.
-
-Similarly we run q$go since container is not a copy of the
-one in p but is a copy of the promise when it is run it
-creates a second container (rather than copying the
-container created by p$go).
+We clone p to create q before we run p$go() so that q
+gets its own promise and that will result in p$go()
+and q$go() creating different windows.
 
 	library(proto)
 	library(gWidgets)
@@ -52,30 +38,38 @@ error.
 	       msg = "Hello", container = gwindow())  # now its lazy
 	p$go()
 	q <- p$clone()  # promises copied, not forced
-	q$go()
+	q$go()  # ERROR !!!
 
 Here is an example that does not make use of any additional
 R packages.  It also appears in example(proto) .  Note the
 difference between the following two code snippets which
 differ only in the order of the statements:
 
-# q is cloned before promises in p are forced
-p <- proto(append = function(., x) .$L[[x]] <- x, L = proto())
-q <- p$clone()
-p$append("A")
-as.list(p$L)
-q$append("B")
-as.list(q$L)
+	# q is cloned before promises in p are forced
+	p <- proto(append = function(., x) .$L[[x]] <- x, L = proto())
+	q <- p$clone()
+	p$append("A")
+	as.list(p$L)
+	q$append("B")
+	as.list(q$L)
 
-# promises in p are forced before q is cloned
-p <- proto(append = function(., x) .$L[[x]] <- x, L = proto())
-p$append("C")
-as.list(p$L)
-q <- p$clone()
-q$append("D")
-as.list(q$L)
+	# promises in p are forced before q is cloned
+	p <- proto(append = function(., x) .$L[[x]] <- x, L = proto())
+	p$append("C")
+	as.list(p$L)
+	q <- p$clone()
+	q$append("D")
+	as.list(q$L)
 
-2. $.proto
+2. as.list.environment
+
+This is a workaround to handle the a bug in R's version of
+this command.  R will not evaluate promises when converting
+an environment to a list and this can cause subsequent
+problems.  The implementation in proto works around this
+problem in R.
+
+3. $.proto
 
 If p is a proto object and meth is a method in it then
 p$meth(myArg) first runs p$meth creating an instantiated
@@ -97,7 +91,7 @@ Note that
 
 are the same.
 
-3. super() and that()
+4. super() and that()
 
 Previously .that and .super were built in variables that
 could be used in methods to refer to the object the method
@@ -107,7 +101,7 @@ object as its environment then it could access them to find
 out what object it belongs to and to easily refer to its
 object's parent.
 
-Unfortunately this polluted ever proto object with .that and
+Unfortunately this polluted every proto object with .that and
 .super variables.  To clean this up we have defined that()
 and super() functions which simply return the environment of
 the method they are defined in and its parent respectively
@@ -138,7 +132,8 @@ the other hand its quite easy to work around it:
 		x <- f()
 	}
 
-is the same as
+is the same as (we just added the first line and changed
+.that to that):
 
 	p <- function(.) {
 		that <- that()
@@ -146,13 +141,13 @@ is the same as
 		x <- f()
 	}
 
-Looking over a large amount of proto code we had found that
-very little of it uses .that or .super so the elimination of
+Looking over a large amount of proto code we found very
+little of it uses .that or .super so the elimination of
 these variables in every proto object seems like a
 worthwhile benefit compared to the minor change in syntax
 required in a small number of routines.
 
-4. There are several new demos.  To see them try this:
+5. There are several new demos.  To see them try this:
 
 	demo(package = proto)
 
@@ -160,10 +155,16 @@ One of these demos is from John Verzani who developed the
 gWidgets package.  For more proto examples with gWidgets see
 the links on the proto home page to his other examples.
 
-5. instantiatedProtoMethod
+6. instantiatedProtoMethod
 
 This feature has been in proto for a while.  It was
 developed based on the original by Tom Short.  p$meth
 creates an object of class "instantiatedProtoMethod" which
 has its own print method.
+
+7. Examples
+
+There are some gWidget examples from John Verzani that specifically take 
+advantage of proto 0.4-0 features here:
+http://wiener.math.csi.cuny.edu/pmg/gWidgets/Examples/ProtoExample-II-ex.pdf
 

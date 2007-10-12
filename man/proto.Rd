@@ -287,7 +287,7 @@ p$a
 sapply(list(p, pc), "$.proto", "incr", 7)
 
 # q is cloned before promises in p are forced
-p <- proto(append = function(., x) .$L[[x]] <- x, L = new.env())
+p <- proto(append = function(., x) .$L[[x]] <- x, L = proto())
 q <- p$clone()
 p$append("A")
 as.list(p$L)
@@ -295,7 +295,7 @@ q$append("B")
 as.list(q$L)
 
 # promises in p are forced before q is cloned
-p <- proto(append = function(., x) .$L[[x]] <- x, L = new.env())
+p <- proto(append = function(., x) .$L[[x]] <- x, L = proto())
 p$append("C")
 as.list(p$L)
 q <- p$clone()
