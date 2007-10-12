@@ -168,3 +168,10 @@ There are some gWidget examples from John Verzani that specifically take
 advantage of proto 0.4-0 features here:
 http://wiener.math.csi.cuny.edu/pmg/gWidgets/Examples/ProtoExample-II-ex.pdf
 
+8. DESCRIPTION
+
+Packages that use proto should not use "LazyLoad: true" in their DESCRIPTION
+file.  Just omit that line.  "SaveImage: true" works although it has been
+deprecated by R.  Given that proto itself uses lazy evaluation lazyload is
+less necessary anyways.
+
