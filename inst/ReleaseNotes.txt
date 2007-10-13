@@ -170,8 +170,9 @@ http://wiener.math.csi.cuny.edu/pmg/gWidgets/Examples/ProtoExample-II-ex.pdf
 
 8. DESCRIPTION
 
-Packages that use proto should not use "LazyLoad: true" in their DESCRIPTION
-file.  Just omit that line.  "SaveImage: true" works although it has been
-deprecated by R.  Given that proto itself uses lazy evaluation lazyload is
-less necessary anyways.
+Packages that have proto objects at the top level should use  
+"LazyLoad: false" in their DESCRIPTION file.  (Alternately 
+"SaveImage: true" works although it has been deprecated in R. Also
+note that omitting the LazyLoad: line means that R will choose
+a default action and so is NOT equivalent to "LazyLoad: false".)
 
