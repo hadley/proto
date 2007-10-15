@@ -12,6 +12,7 @@ resetIfFun <- function(v, e) {
    v
 }
 
+### not used - see clone2 version after this one
 clone2 <- function(e, f = new.env(parent = parent.env(e)), 
 	g = parent.frame(), envir = f, expr, ...) {
 	if (missing(expr)) {
@@ -67,7 +68,10 @@ as.proto.environment <- function(x, ...) {
 }
 
 as.proto.proto <- function(x, ...) x
-as.proto.list <- function(x, ..., envir = parent.frame()) do.call(proto, c(x, ...), envir = envir)
+as.proto.list <- function(x, ..., envir = new.env(parent = parent), 
+   parent = parent.frame()) {
+	do.call(proto, c(parent.env(envir), x, ...), envir = envir)
+}
 
 # "$.proto" <- function(this, x) {
 #    inh <- substr(x,1,2) != ".."
