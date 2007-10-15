@@ -157,7 +157,7 @@ str.proto <- function(object, max.level = 1, nest.lev = 0, indent.str =
 
 # needed to work around bug in R in which promises are not
 # evaluated (but should be) by as.list
-as.list.environment <- function(x, ...) {
+as.list.proto <- as.list.environment <- function(x, ...) {
 	sapply(ls(x, ...), get, x, simplify = FALSE)
 }
 
