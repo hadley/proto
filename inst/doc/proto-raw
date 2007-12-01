@@ -119,18 +119,18 @@ Thus the
 the availability of a popular language,
 \proglang{R} \footnote{Some indications of the popularity of R are
 the high volume mailing lists, international development team, the
-existence of over 500 addon packages, conferences and numerous books 
+existence of over 1000 addon packages, conferences and numerous books 
 and papers devoted to R.},
-that finally does provide the key infrastructure 
-is an important development.
+that does provide the key infrastructure 
+could be important for develoeprs.
 
 This work grew out of the need to organize multiple scenarios of model
 simulations in ecological modelling \citep{Rnews:Petzoldt:2003} and
 was subsequently generalized to the present package.  A number of
 iterations of the code, some motivated by the ever increasing feature
 set in \proglang{R}, resulted in a series of utilities and ultimately
-successive versions of an \proglang{R} package developed over the last
-year.  An initial version used \proglang{R} lists as the basis of the
+successive versions of an \proglang{R} package developed over a period of
+several years.  An initial version used \proglang{R} lists as the basis of the
 package.  Subsequently the package was changed to use \proglang{R}
 environments.  The first version to use environments stored the
 receiver object variable in a proxy parent environment which was

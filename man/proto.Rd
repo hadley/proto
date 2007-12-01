@@ -24,7 +24,8 @@ oriented system.
 }
 \usage{
 proto(. = parent.env(envir), expr = {}, envir = 
-		new.env(parent = parent.frame()), ..., funEnvir )
+		new.env(parent = parent.frame()), ..., 
+		eval.env = parent.frame(), funEnvir )
 \method{as.proto}{list}(x, envir, parent, all.names = FALSE, ..., 
 	funEnvir = envir, SELECT = function(x) TRUE)
 \method{$}{proto}(this, x, ..., firstArg = this, list)
@@ -41,6 +42,8 @@ isnot.function(x)
   \item{envir}{an existing prototype object or environment into which 
     the variables and methods defined in \code{expr} are placed.  
     If omitted a new object is created.}
+  \item{eval.env}{the environment in which promises in \dots are evaluated.
+    Normally the default can be used.}
   \item{funEnvir}{the environment of methods passed via \dots are automatically
     set to this environment.  Normally this argument is omitted, defaulting
     to \code{envir}; however, one can specify \code{FALSE} 

@@ -49,13 +49,14 @@ clone2 <- function(e, f = new.env(parent = parent.env(e)),
 }
 
 proto <- function (parent = parent.env(envir), expr = {}, envir = 
-		new.env(parent = parent.frame()), ..., funEnvir = envir) {
+		new.env(parent = parent.frame()), ..., 
+		eval.env = parent.frame(), funEnvir = envir) {
     parent.env(envir) <- parent
     f <- function(){}
     formals(f) <- eval(substitute(as.pairlist(alist(...))))
     body(f) <- substitute(environment())
     # environment(f) <- parent
-    clone2(e = f(), f = envir, g = parent.frame(), envir = funEnvir, all = TRUE)
+    clone2(e = f(), f = envir, g = eval.env, envir = funEnvir, all = TRUE)
     if (!missing(expr)) eval(substitute(eval(quote({ expr }))), envir)
     as.proto(envir)
 }
