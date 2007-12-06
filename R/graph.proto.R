@@ -7,7 +7,7 @@ name.proto <- function(., envir = parent.frame()) {
       else {
          L <- unlist(eapply(envir, identical, .))
          if (any(L)) names(L[L])[1]
-         else gsub("^.* |>$", "", capture.output(print(.))[[1]])
+         else gsub("^.* |>$", "", capture.output(print.default(.))[[1]])
       }
    } else {
       e <- get(., envir)
