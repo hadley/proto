@@ -22,6 +22,9 @@ o documentation revisions
 
 o updated THANKS file
 
+o name.proto might not work correctly if the user redefined print.  
+  name.proto has been changed to use print.default to avoid this.
+
 VERSION 0.3-8
 
 o minor changes to satisfy R 2.6.0
