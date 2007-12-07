@@ -22,8 +22,10 @@ o documentation revisions
 
 o updated THANKS file
 
-o name.proto might not work correctly if the user redefined print.  
-  name.proto has been changed to use print.default to avoid this.
+o name.proto now uses print.default instead of print in case user redefines
+  print
+
+o as.proto.data.frame method
 
 VERSION 0.3-8
 

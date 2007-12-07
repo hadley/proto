@@ -3,6 +3,7 @@
 \alias{as.proto}
 \alias{as.proto.environment}
 \alias{as.proto.list}
+\alias{as.proto.data.frame}
 \alias{as.proto.proto}
 \alias{isnot.function}
 \alias{is.proto}

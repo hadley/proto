@@ -69,6 +69,7 @@ as.proto.environment <- function(x, ...) {
 }
 
 as.proto.proto <- function(x, ...) x
+as.proto.data.frame <-
 as.proto.list <- function(x, ..., envir = new.env(parent = parent), 
    parent = parent.frame()) {
 	do.call(proto, c(parent.env(envir), x, ...), envir = envir)
