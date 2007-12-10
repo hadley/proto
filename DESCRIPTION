@@ -9,5 +9,5 @@ Description: An object oriented system using object-based, also
 	oriented ideas.
 Depends: R (>= 2.6.0)
 Suggests: graph, Rgraphviz
-License: GPL2
+License: GPL-2
 URL: http://code.google.com/p/r-proto/
