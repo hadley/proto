@@ -584,7 +584,7 @@ an empty graph is assumed.  The last argument is a logical variable
 that specifies the orientation of arrows.  If omitted arrows are
 drawn from children to their parents.
 
-<<proto-dot,fig=TRUE,height=4,split=TRUE,include=FALSE,prefix=FALSE>>=
+<<proto-dot,fig=TRUE,height=5,split=TRUE,include=FALSE,prefix=FALSE>>=
 library(Rgraphviz)
 g <- graph.proto()
 plot(g)
