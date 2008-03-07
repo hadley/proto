@@ -22,10 +22,16 @@ o documentation revisions
 
 o updated THANKS file
 
-o name.proto now uses print.default instead of print in case user redefines
-  print
+o name.proto now uses print.default, not print, in case user redefines print
 
 o as.proto.data.frame method
+
+o the parent= argument of proto() may be a function in which case the
+  function's environment is used as the parent.  This is convenient for
+  defining proxy objects: e.g. in the following function f2 is same as f
+  except a proxy proto object has been wedged between it and its prior
+  parent containing the a variable: f2 <- with(proto(f, a = 1, g = f), g)
+  https://stat.ethz.ch/pipermail/r-devel/2008-March/048625.html
 
 VERSION 0.3-8
 

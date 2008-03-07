@@ -51,7 +51,8 @@ clone2 <- function(e, f = new.env(parent = parent.env(e)),
 proto <- function (parent = parent.env(envir), expr = {}, envir = 
 		new.env(parent = parent.frame()), ..., 
 		eval.env = parent.frame(), funEnvir = envir) {
-    parent.env(envir) <- parent
+    parent.env(envir) <- if (is.function(parent)) { environment(parent)
+        } else parent
     f <- function(){}
     formals(f) <- eval(substitute(as.pairlist(alist(...))))
     body(f) <- substitute(environment())

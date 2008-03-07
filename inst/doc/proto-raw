@@ -72,13 +72,14 @@ programming within \proglang{R} over the last years additional object
 oriented programming packages emerged.  These include the \pkg{R.oo}
 package \citep{Bengtsson2003} and the \pkg{OOP} package
 \citep[\url{http://www.omegahat.org/OOP/}]{Rnews:Chambers+Lang:2001a}.
-All these packages have the common thread that they use
+The common thread among these packages is that they use
 classes as the basis of inheritance.  When a message is sent to an
 object the class of the object is examined and that class determines the
-specific function to be executed. In prototype programming there
-are no classes making it simple yet it retains much of the power of
+specific function to be executed. In contrast, in prototype programming 
+there are no classes yet it retains much of the power of
 class-based programming.  In the fact, \pkg{proto} is so simple that
-there is only one significant new routine name, \code{proto}.  The
+there are only two significant new routine name, \code{proto}, and 
+\code{clone2}.  The
 other routines are just the expected support routines such as
 \code{as.proto} to coerce objects to proto objects, \code{\$} to
 access and set proto object components and \code{is.proto} to check
@@ -93,8 +94,7 @@ existing facilities of the language rather than adding its own.
 \subsection{History}
 \label{sec:history}
 
-The concept of 
-prototype programming
+The concept of prototype programming
 \citep{Lieberman1986, Taivalsaari1996a, Noble1999}
 has developed over a number of years with the \proglang{Self}
 language \citep{Agesen1992}
@@ -109,20 +109,18 @@ enter the mainstream (e.g.  \proglang{Newtonscript}
 on the Newton computer, which
 is no longer available, and \proglang{Javascript} where 
 it is available but whose
-domain of application largely precluses use of prototype programming)
+domain of application largely precludes use of prototype programming)
 prototype programming is not well known due to lack of language
 support in popular programming languages such as \proglang{C} and 
 \proglang{Java}.  It tends
 to be the domain of research languages or \proglang{Lisp}.
 
-Thus the
-the availability of a popular language,
+Thus the availability of a popular language,
 \proglang{R} \footnote{Some indications of the popularity of R are
 the high volume mailing lists, international development team, the
 existence of over 1000 addon packages, conferences and numerous books 
 and papers devoted to R.},
-that does provide the key infrastructure 
-could be important for develoeprs.
+that does provide the key infrastructure could be important for developers.
 
 This work grew out of the need to organize multiple scenarios of model
 simulations in ecological modelling \citep{Rnews:Petzoldt:2003} and
