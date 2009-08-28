@@ -57,15 +57,15 @@ proto <- function (parent = parent.env(envir), expr = {}, envir =
     formals(f) <- eval(substitute(as.pairlist(alist(...))))
     body(f) <- substitute(environment())
     # environment(f) <- parent
-    clone2(e = f(), f = envir, g = eval.env, envir = funEnvir, all = TRUE)
+    clone2(e = f(), f = envir, g = eval.env, envir = funEnvir, all.names = TRUE)
     if (!missing(expr)) eval(substitute(eval(quote({ expr }))), envir)
     as.proto(envir)
 }
 
 as.proto <- function(x, ...) UseMethod("as.proto")
 as.proto.environment <- function(x, ...) {
-	assign(".that", x, env = x)
-	assign(".super", parent.env(x), env = x)
+	assign(".that", x, envir = x)
+	assign(".super", parent.env(x), envir = x)
 	structure(x, class = c("proto", "environment"))
 }
 
@@ -79,12 +79,12 @@ as.proto.list <- function(x, ..., envir = new.env(parent = parent),
 # "$.proto" <- function(this, x) {
 #    inh <- substr(x,1,2) != ".."
 #    p <- parent.frame()
-#    is.function <- is.function(get(x, env = this, inherits = inh))
+#    is.function <- is.function(get(x, envir = this, inherits = inh))
 #    is.that <- match(deparse(substitute(this)), c(".that",".super"), nomatch=0)
 #    s <- if (is.function && !is.that)
-#          substitute(function(...) get(x, env = this, inherits = inh)(this, ...))
+#          substitute(function(...) get(x, envir = this, inherits = inh)(this, ...))
 #    else
-#          substitute(get(x, env = this, inherits = inh))
+#          substitute(get(x, envir = this, inherits = inh))
 #    res <- eval(s, list(inh = inh), p)
 #    if (is.function && !is.that) environment(res) <- p
 #    res
@@ -99,7 +99,7 @@ is.proto <- function(x) inherits(x, "proto")
 "$.proto" <- function (this, x, ..., receiver = this, list) {
     # remember that x is the NAME of object, not object
     inh <- substr(x, 1, 2) != ".."
-    getx <- get(x, env = this, inherits = inh)
+    getx <- get(x, envir = this, inherits = inh)
     is.function <- is.function(getx)
     if (is.function && nargs() > 2) {
 	# need a double substitute for receiver=this
@@ -115,8 +115,8 @@ is.proto <- function(x) inherits(x, "proto")
     s <- if (is.function && !is.that)
         substitute(function(..., receiver) {
 		if (missing(receiver)) receiver <- this
-		get(x, env = this, inherits = inh)(receiver, ...)}, L)
-    else substitute(get(x, env = this, inherits = inh), L)
+		get(x, envir = this, inherits = inh)(receiver, ...)}, L)
+    else substitute(get(x, envir = this, inherits = inh), L)
     # res <- eval(s, base::list(this = this, x = x, inh = inh), p)
     p <- parent.frame()
     res <- eval(s, L, p)

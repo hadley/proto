@@ -1,9 +1,9 @@
 Package: proto
-Version: 0.4-0
+Version: 0.4-1
 Date: 2008-02-06
 Title: Prototype object-based programming
 Author: Louis Kates, Thomas Petzoldt
-Maintainer: Gabor Grothendieck <ggrothendieck@gmail.com>
+Maintainer: G. Grothendieck <ggrothendieck@gmail.com>
 Description: An object oriented system using object-based, also
 	called prototype-based, rather than class-based object 
 	oriented ideas.

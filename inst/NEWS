@@ -33,6 +33,8 @@ o the parent= argument of proto() may be a function in which case the
   parent containing the a variable: f2 <- with(proto(f, a = 1, g = f), g)
   https://stat.ethz.ch/pipermail/r-devel/2008-March/048625.html
 
+o wrote out full argument names to avoid build warnings (Matthias Burger)
+
 VERSION 0.3-8
 
 o minor changes to satisfy R 2.6.0

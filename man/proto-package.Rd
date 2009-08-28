@@ -23,9 +23,11 @@ Invoking a demo file\tab \code{demo("proto")}\cr
 Referance Card\tab \code{vignette("protoref")}\cr
 Tutorial \tab \code{vignette("proto")}\cr
 Prototype OO concepts document\tab \code{u <- "http://r-proto.googlecode.com/files/prototype_approaches.pdf"; browseURL(u)}\cr
-News\tab \code{file.show(system.file("NEWS", package = "proto"))}\cr
-Wish List\tab \code{file.show(system.file("WISHLIST", package = "proto"))}\cr
-Thanks\tab \code{file.show(system.file("THANKS", package = "proto"))}\cr
+News\tab \code{RShowDoc("NEWS", package = "proto")}\cr
+Wish List\tab \code{RShowDoc("WISHLIST", package = "proto")}\cr
+Thanks\tab \code{RShowDoc("THANKS", package = "proto")}\cr
+License\tab \code{RShowDoc("COPYING", package = "proto")}\cr
+Citation\tab \code{citation(package = "proto")}\cr
 This File\tab \code{package?proto}\cr
 Help file\tab \code{?proto}\cr
 graph.proto Help File\tab \code{?graph.proto}\cr
