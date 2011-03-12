@@ -1,39 +1,11 @@
-Note that there are further ReleaseNotes.txt accessible
-within the source distribution in
-   inst/ReleaseNotes.txt 
-and from within R via:
-   file.show(system.file("ReleaseNotes.txt", package = "proto"))
+VERSION 0.3-9
 
-===
+o minor changes to satisfy subtitute/eval changes in R 2.13.0 (thanks to
+  Luke Tierney)
 
-VERSION 0.4-0
+o x could previously not be the name of a proto object. Now fixed.
 
-o proto function evaluates ... lazily
-
-o clone function to lazily copy proto objects
-
-o $.proto has a new optional receiver argument
-
-o new that() and super() functions (.that and .super will be deprecated)
-
-o two new demos in demo directory
-
-o documentation revisions
-
-o updated THANKS file
-
-o name.proto now uses print.default, not print, in case user redefines print
-
-o as.proto.data.frame method
-
-o the parent= argument of proto() may be a function in which case the
-  function's environment is used as the parent.  This is convenient for
-  defining proxy objects: e.g. in the following function f2 is same as f
-  except a proxy proto object has been wedged between it and its prior
-  parent containing the a variable: f2 <- with(proto(f, a = 1, g = f), g)
-  https://stat.ethz.ch/pipermail/r-devel/2008-March/048625.html
-
-o wrote out full argument names to avoid build warnings (Matthias Burger)
+o proto print methods could break str.proto.  Now fixed.
 
 VERSION 0.3-8
 
