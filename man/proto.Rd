@@ -24,6 +24,17 @@
 \usage{
 proto(. = parent.env(envir), expr = { }, envir = new.env(parent =
   parent.frame()), ..., funEnvir = envir)
+
+as.proto(x, ...)
+
+\method{as.proto}{environment}(x, ...)
+
+\method{as.proto}{proto}(x, ...)
+
+\method{as.proto}{list}(x, envir, parent, all.names = FALSE, ...,
+  funEnvir = envir, SELECT = function(x) TRUE)
+
+is.proto(x)
 }
 \arguments{
 \item{.}{the parent object of the new object.  May be a proto object or an
@@ -43,36 +54,29 @@ defaulting to \code{envir}; however, one can specify \code{FALSE} to cause
 their environment to not be set or one can specify some other environment or
 proto object to which their environment is to be set.}
 
-\item{eval.env}{the environment in which promises in \dots{} are evaluated.
-Normally the default can be used.}
-
 \item{x}{a list.}
 
 \item{parent}{a prototype object or environment which is to be used as the
 parent of the object.  If \code{envir} is specified then its parent is
 coerced to \code{parent}.}
 
-\item{\dots}{for \code{proto} these are components to be embedded in the new
-object.  For \code{as.proto.list} these are arguments to pass to
-\code{proto} in the case that a new object is created.  for \code{$.proto}
-the method is evaluated at these arguments.}
+\item{all.names}{only names not starting with a dot are copied unless
+all.names is TRUE.}
 
 \item{SELECT}{a function which given an object returns \code{TRUE} or
 \code{FALSE} such that only those for which \code{SELECT} returns
 \code{TRUE} are kept in the returned \code{proto} object.}
 
-\item{all.names}{only names not starting with a dot are copied unless
-all.names is TRUE.}
-
-\item{firstArg}{The first argument, normally \code{this} passed to the
-method.}
+\item{\dots}{for \code{proto} these are components to be embedded in the new
+object.  For \code{as.proto.list} these are arguments to pass to
+\code{proto} in the case that a new object is created.  for \code{$.proto}
+the method is evaluated at these arguments.}
 
 \item{list}{list whose components are an alternate way to specifying
 arguments in place of \code{\dots{}}}
 }
 \value{
 \code{proto} and \code{as.proto} all return proto objects.
-\code{isnot.function} returns a logical value.
 }
 \description{
 \code{proto} creates or modifies objects of the proto object oriented
@@ -115,9 +119,6 @@ call to \code{proto} with \code{parent} and \code{\dots{}} as arguments. If
 Note that if \code{parent} is a proto object with its own \code{proto}
 method then the \code{proto} method of the parent will override the one
 described here in which case the functionality may differ.
-
-The utility function \code{isnot.function} is provided for use with
-\code{as.proto.list} to facilitate the copying of variables only.
 
 \code{$} can be used to access or set variables and methods in an object.
 

@@ -90,9 +90,6 @@ NULL
 #' method then the \code{proto} method of the parent will override the one
 #' described here in which case the functionality may differ.
 #'
-#' The utility function \code{isnot.function} is provided for use with
-#' \code{as.proto.list} to facilitate the copying of variables only.
-#'
 #' \code{$} can be used to access or set variables and methods in an object.
 #'
 #' When \code{$} is used for getting variables and methods, calls of the form
@@ -154,8 +151,6 @@ NULL
 #' @param envir an existing prototype object or environment into which the
 #' variables and methods defined in \code{expr} are placed.  If omitted a new
 #' object is created.
-#' @param eval.env the environment in which promises in \dots{} are evaluated.
-#' Normally the default can be used.
 #' @param funEnvir the environment of methods passed via \dots{} are
 #' automatically set to this environment.  Normally this argument is omitted,
 #' defaulting to \code{envir}; however, one can specify \code{FALSE} to cause
@@ -169,17 +164,7 @@ NULL
 #' object.  For \code{as.proto.list} these are arguments to pass to
 #' \code{proto} in the case that a new object is created.  for \code{$.proto}
 #' the method is evaluated at these arguments.
-#' @param SELECT a function which given an object returns \code{TRUE} or
-#' \code{FALSE} such that only those for which \code{SELECT} returns
-#' \code{TRUE} are kept in the returned \code{proto} object.
-#' @param all.names only names not starting with a dot are copied unless
-#' all.names is TRUE.
-#' @param firstArg The first argument, normally \code{this} passed to the
-#' method.
-#' @param list list whose components are an alternate way to specifying
-#' arguments in place of \code{\dots{}}
 #' @return \code{proto} and \code{as.proto} all return proto objects.
-#' \code{isnot.function} returns a logical value.
 #' @note proto methods can be used with environments but some care must be
 #' taken.  Problems can be avoided by always using proto objects in these
 #' cases.  This note discusses the pitfalls of using environments for those
@@ -322,11 +307,13 @@ proto <- function(. = parent.env(envir), expr = {},
 }
 
 #' @export
+#' @rdname proto
 as.proto <- function(x, ...) {
   UseMethod("as.proto")
 }
 
 #' @export
+#' @rdname proto
 as.proto.environment <- function(x, ...) {
   assign(".that", x, envir = x)
   assign(".super", parent.env(x), envir = x)
@@ -334,10 +321,19 @@ as.proto.environment <- function(x, ...) {
 }
 
 #' @export
+#' @rdname proto
 as.proto.proto <- function(x, ...) {
   x
 }
 
+#' @param all.names only names not starting with a dot are copied unless
+#'   all.names is TRUE.
+#' @param list list whose components are an alternate way to specifying
+#'   arguments in place of \code{\dots{}}
+#' @param SELECT a function which given an object returns \code{TRUE} or
+#'   \code{FALSE} such that only those for which \code{SELECT} returns
+#'   \code{TRUE} are kept in the returned \code{proto} object.
+#' @rdname proto
 #' @export
 as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
                           funEnvir = envir, SELECT = function(x) TRUE) {
@@ -385,6 +381,7 @@ as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
 }
 
 #' @export
+#' @rdname proto
 is.proto <- function(x) inherits(x, "proto")
 
 isnot.function <- function(x) !is.function(x)
