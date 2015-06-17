@@ -31,7 +31,7 @@ add2 <- Add$new(x = 1:10)
 add2$add()
 
 Logadd <- Add$proto( logadd = function(.) log( .$add() ) )
-logadd1 <- Logadd$new(1:5) 
+logadd1 <- Logadd$new(1:5)
 logadd1$logadd()
 
 addProto$ls()
@@ -44,10 +44,6 @@ addProto2a$parent.env()
 addProto$eapply(length) # show length of each component
 
 addProto$identical(addProto2)
-
-library(Rgraphviz)
-g <- graph.proto()
-plot(g)
 
 oo <- proto(expr = {
            x <- rnorm(251, 0, 0.15)
@@ -65,7 +61,7 @@ oo <- proto(expr = {
            plot <- function(.) with(., {
                        graphics::plot(tt, x, pch  = pch, xlab = xlab,
                                     ylab = ylab, col  = col[1])
-                       if (!is.na(..x.smooth[1])) 
+                       if (!is.na(..x.smooth[1]))
                                     lines(tt, ..x.smooth, col=col[2])
                    })
            residuals <- function(.) with(., {
@@ -89,7 +85,7 @@ oo$plot()
 plot(oo$residuals(), type="l")
 # hist(oo$residuals()$y)
 # acf(oo$residuals()$y)
-oo.res <- oo$proto( pch = "-", x = oo$residuals()$y, 
+oo.res <- oo$proto( pch = "-", x = oo$residuals()$y,
                ylab = "Residuals deg K" )
 
 par(mfrow=c(1,1))
@@ -135,9 +131,9 @@ longley.ci <- proto( expr = {
 	x <- longley[,c("GNP", "Unemployed")]
 	n <- nrow(x)
 	pp <- c(.025, .975)
-	 
+
 	corx <- cor(x)[1,2]
-	ci <- function(.) 
+	ci <- function(.)
 		(.$CI <- tanh( atanh(.$corx) + qnorm(.$pp)/sqrt(.$n-3) ))
 })
 
@@ -155,30 +151,30 @@ longley.ci$ci()
 longley.ci.boot$ci()
 longley.ci.boot$proto(N=4000)$ci()
 
-# do not need left <- right <- NULL anymore in leaf 
-# also eliminated right <- NULL in parent 
-tree <- proto(expr = {  
-	incr <- function(., val) .$value <- .$value + val 
-	..Name <- "root" 
-	value <- 3 
+# do not need left <- right <- NULL anymore in leaf
+# also eliminated right <- NULL in parent
+tree <- proto(expr = {
+	incr <- function(., val) .$value <- .$value + val
+	..Name <- "root"
+	value <- 3
 	..left <- proto( expr = { ..Name = "leaf" })
-}) 
+})
 
 cat("root:", tree$value, "leaf:", tree$..left$value, "\n")
 
-# incrementing root increments leaf too 
-tree$incr(1) 
+# incrementing root increments leaf too
+tree$incr(1)
 cat("root:", tree$value, "leaf:", tree$..left$value, "\n")
 
 
-# incrementing leaf gives it its own value field 
-# so now incrementing root does not increment leaf 
-tree$..left$incr(10) 
+# incrementing leaf gives it its own value field
+# so now incrementing root does not increment leaf
+tree$..left$incr(10)
 cat("root:", tree$value, "leaf:", tree$..left$value, "\n")
-tree$incr(5) 
+tree$incr(5)
 cat("root:", tree$value, "leaf:", tree$..left$value, "\n")
 
-lineq <- proto(eq = "6*x + 12 - 10*x/4 = 2*x", 
+lineq <- proto(eq = "6*x + 12 - 10*x/4 = 2*x",
    solve = function(.) {
       e <- eval(parse(text=paste(sub("=", "-(", .$eq), ")")), list(x = 1i))
       -Re(e)/Im(e)
