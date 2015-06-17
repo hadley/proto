@@ -351,11 +351,9 @@ isnot.function <- function(x) !is.function(x)
 
 #' @export
 "$.proto" <- function(x, name) {
-  if (substr(name, 1, 2) == "..") {
-    return(x[[name]])
-  }
+  inherits <- substr(name, 1, 2) != ".."
 
-  res <- get(name, envir = x, inherits = TRUE)
+  res <- get(name, envir = x, inherits = inherits)
   if (!is.function(res))
     return(res)
 
