@@ -9,7 +9,6 @@ Authors@R: c(
     person("Louis", "Kates", role = "aut"),
     person("Thomas", "Petzoldt", role = "aut")
   )
-Suggests: graph, Rgraphviz
 License: GPL-2
 URL: https://github.com/hadley/proto
 BugReports: https://github.com/hadley/proto/issues

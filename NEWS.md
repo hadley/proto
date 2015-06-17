@@ -1,5 +1,9 @@
 # VERSION 0.3.9.9000
 
+* `graph.proto()` has been removed since it relies on packages that are 
+  no longer on CRAN. `name.proto()` is no longer exported since it was
+  used primarily by `graph.proto()`.
+
 * Hadley Wickham has taken over maintenance.
 
 * All outstanding R CMD check problems have been fixed.
