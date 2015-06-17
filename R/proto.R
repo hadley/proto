@@ -298,7 +298,7 @@ NULL
 #' q$append("D")
 #' as.list(q$L)
 #'
-#'
+#' @export
 proto <- function (. = parent.env(envir), expr = {},
                    envir = new.env(parent = parent.frame()), ...,
                    funEnvir = envir) {
@@ -321,20 +321,24 @@ proto <- function (. = parent.env(envir), expr = {},
     envir
 }
 
+#' @export
 as.proto <- function(x, ...) {
   UseMethod("as.proto")
 }
 
+#' @export
 as.proto.environment <- function(x, ...) {
   assign(".that", x, env = x)
   assign(".super", parent.env(x), env = x)
   structure(x, class = c("proto", "environment"))
 }
 
+#' @export
 as.proto.proto <- function(x, ...) {
   x
 }
 
+#' @export
 as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
                           funEnvir = envir, SELECT = function(x) TRUE) {
   if (missing(envir)) {
@@ -370,6 +374,7 @@ as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
 #    res
 # }
 
+#' @export
 "$<-.proto" <- function(this,s,value) {
   if (s == ".super")
     parent.env(this) <- value
@@ -379,9 +384,12 @@ as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
   this
 }
 
+#' @export
 is.proto <- function(x) inherits(x, "proto")
+
 isnot.function <- function(x) !is.function(x)
 
+#' @export
 "$.proto" <- function (this, x, args) {
   inh <- substr(x, 1, 2) != ".."
   p <- parent.frame()
@@ -400,6 +408,7 @@ isnot.function <- function(x) !is.function(x)
 
 
 # modified from Tom Short's original
+#' @export
 print.instantiatedProtoMethod <- function(x, ...) {
   # cat("proto method call: ")
   # print(unclass(x))
@@ -409,6 +418,7 @@ print.instantiatedProtoMethod <- function(x, ...) {
 }
 
 # modified from Tom Short's original
+#' @export
 str.proto <- function(object, max.level = 1, nest.lev = 0,
                       indent.str = paste(rep.int(" ", max(0, nest.lev + 1)), collapse = ".."),
                       ...) {

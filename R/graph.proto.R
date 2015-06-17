@@ -1,3 +1,4 @@
+#' @export
 name.proto <- function(., envir = parent.frame()) {
   stopifnot(is.environment(.) ||
       (is.character(.) && is.environment(get(., envir))))
@@ -19,8 +20,6 @@ name.proto <- function(., envir = parent.frame()) {
       .
   }
 }
-
-
 
 #' Create a graph of proto objects
 #'
@@ -72,6 +71,7 @@ name.proto <- function(., envir = parent.frame()) {
 #' plot(graph.proto(), attrs = attrs) # specify plot attributes
 #' }
 #'
+#' @export
 graph.proto <- function(e, g = new("graphNEL", edgemode = "directed"),
                         child.to.parent = TRUE) {
   if (missing(e))
