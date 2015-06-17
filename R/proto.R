@@ -241,11 +241,11 @@ proto <- function(. = parent.env(envir), expr = {},
                    envir = new.env(parent = parent.frame()), ...,
                    funEnvir = envir) {
   parent.env(envir) <- .
-  as.proto.environment(envir)  # must do this before eval(...)
+  envir <- as.proto.environment(envir)  # must do this before eval(...)
   # moved eval after for so that ... always done first
   # eval(substitute(eval(quote({ expr }))), envir)
   dots <- list(...); names <- names(dots)
-  for (i in seq(length = length(dots))) {
+  for (i in seq_along(dots)) {
     assign(names[i], dots[[i]], envir = envir)
     if (!identical(funEnvir, FALSE) && is.function(dots[[i]]))
       environment(envir[[names[i]]]) <- funEnvir
