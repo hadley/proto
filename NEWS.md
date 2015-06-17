@@ -1,4 +1,4 @@
-# VERSION 0.3.9.9000
+# VERSION 1.0.0
 
 * `graph.proto()` has been removed since it relies on packages that are 
   no longer on CRAN. `name.proto()` is no longer exported since it was
