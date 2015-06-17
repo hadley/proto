@@ -299,7 +299,7 @@ NULL
 #' as.list(q$L)
 #'
 #' @export
-proto <- function (. = parent.env(envir), expr = {},
+proto <- function(. = parent.env(envir), expr = {},
                    envir = new.env(parent = parent.frame()), ...,
                    funEnvir = envir) {
   parent.env(envir) <- .
@@ -390,7 +390,7 @@ is.proto <- function(x) inherits(x, "proto")
 isnot.function <- function(x) !is.function(x)
 
 #' @export
-"$.proto" <- function (this, x, args) {
+"$.proto" <- function(this, x, args) {
   inh <- substr(x, 1, 2) != ".."
   p <- parent.frame()
   res <- get(x, envir = this, inherits = inh)
