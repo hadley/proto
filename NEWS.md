@@ -1,3 +1,11 @@
+# VERSION 0.3.9.9000
+
+* Hadley Wickham has taken over maintenance.
+
+* All outstanding R CMD check problems have been fixed.
+
+* New NAMESPACE file that ensures that proto works when not attached.
+
 # VERSION 0.3-9
 
 * minor changes to satisfy subtitute/eval changes in R 2.13.0 (thanks to
