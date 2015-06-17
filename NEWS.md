@@ -1,5 +1,8 @@
 # VERSION 1.0.0
 
+* You can override the default printing method by providing a `proto_print`
+  method in your object.
+
 * `graph.proto()` has been removed since it relies on packages that are 
   no longer on CRAN. `name.proto()` is no longer exported since it was
   used primarily by `graph.proto()`.

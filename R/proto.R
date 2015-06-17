@@ -366,3 +366,12 @@ str.proto <- function(object, max.level = 1, nest.lev = 0,
     str(parent.env(object), nest.lev = nest.lev + 1, ...)
   }
 }
+
+#' @export
+print.proto <- function(x, ...) {
+  if (!exists("proto_print", envir = x, inherits = TRUE))
+    return(NextMethod())
+
+  x$proto_print(...)
+}
+
