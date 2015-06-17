@@ -3,3 +3,5 @@
 [.]out$
 yacas.exe
 scripts.dat
+^.*\.Rproj$
+^\.Rproj\.user$
