@@ -6,3 +6,4 @@ scripts.dat
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^NEWS\.md$
+^\.travis\.yml$
