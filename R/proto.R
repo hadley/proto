@@ -205,12 +205,11 @@ NULL
 #' \code{\link{environment}}
 #' @keywords programming
 #' @examples
-#'
-#' oo <- proto(expr = {x = c(10, 20, 15, 19, 17)
-#'              location <- function(.) mean(.$x) # 1st arg is object
-#'              rms <- function(.)
-#'                       sqrt(mean((.$x - .$location())^2))
-#'              bias <- function(., b) .$x <- .$x + b
+#' oo <- proto(expr = {
+#'    x = c(10, 20, 15, 19, 17)
+#'    location = function(.) mean(.$x) # 1st arg is object
+#'    rms = function(.) sqrt(mean((.$x - .$location())^2))
+#'    bias = function(., b) .$x <- .$x + b
 #' })
 #'
 #' debug(oo$with(rms)) # cannot use oo$rms to pass method as a value
@@ -260,28 +259,6 @@ NULL
 #' p$incr(7)
 #' p$incr(x=7)
 #' p$a
-#' # cannot use x=7 in "$.proto" form since x="incr" but these two are ok:
-#' "$.proto"(p, "incr", 7)
-#' "$.proto"(p, "incr", list = list(x = 7))
-#'
-#' # $.proto form is useful in sapply/lapply
-#' sapply(list(p, pc), "$.proto", "incr", 7)
-#'
-#' # q is cloned before promises in p are forced
-#' p <- proto(append = function(., x) .$L[[x]] <- x, L = proto())
-#' q <- p$clone()
-#' p$append("A")
-#' as.list(p$L)
-#' q$append("B")
-#' as.list(q$L)
-#'
-#' # promises in p are forced before q is cloned
-#' p <- proto(append = function(., x) .$L[[x]] <- x, L = proto())
-#' p$append("C")
-#' as.list(p$L)
-#' q <- p$clone()
-#' q$append("D")
-#' as.list(q$L)
 #'
 #' @export
 proto <- function(. = parent.env(envir), expr = {},
