@@ -44,11 +44,6 @@ not be necessary but its there for those who wish.)
 multiple people and has no known bugs.  (If you find any
 please let the developers know!)
 
-6. visualization.  It includes a graphical support function,
-graph.proto, which produces inheritance graphs of projects 
-that can be rendered using the Rgraphviz plot function, 
-allowing one to visualize projects.
-
 ## Example
 
 The proto package is used like this:
