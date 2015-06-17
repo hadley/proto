@@ -8,3 +8,4 @@ scripts.dat
 ^NEWS\.md$
 ^\.travis\.yml$
 ^revdep$
+^cran-comments\.md$
