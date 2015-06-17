@@ -1,5 +1,7 @@
 # Proto 
 
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/proto)](http://cran.r-project.org/web/packages/proto)
+
 Proto is an R package that facilitates prototype
 programming, a type of object-oriented programming that
 does not use classes as an atomic concept (but is powerful
