@@ -1,6 +1,6 @@
 Package: proto
 Version: 1.0.0
-Title: Prototype object-based programming
+Title: Prototype Object-Based Programming
 Description: An object oriented system using object-based, also
 	called prototype-based, rather than class-based object oriented ideas.
 Authors@R: c(
