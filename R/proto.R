@@ -356,20 +356,6 @@ as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
   as.proto.environment(envir)  # force refresh of .that and .super
 }
 
-# "$.proto" <- function(this, x) {
-#    inh <- substr(x,1,2) != ".."
-#    p <- parent.frame()
-#    is.function <- is.function(get(x, env = this, inherits = inh))
-#    is.that <- match(deparse(substitute(this)), c(".that",".super"), nomatch=0)
-#    s <- if (is.function && !is.that)
-#          substitute(function(...) get(x, env = this, inherits = inh)(this, ...))
-#    else
-#          substitute(get(x, env = this, inherits = inh))
-#    res <- eval(s, list(inh = inh), p)
-#    if (is.function && !is.that) environment(res) <- p
-#    res
-# }
-
 #' @export
 "$<-.proto" <- function(this,s,value) {
   if (s == ".super")
