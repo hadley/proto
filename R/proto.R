@@ -323,8 +323,6 @@ as.proto.list <- function(x, envir, parent, all.names = FALSE, ...,
 #' @rdname proto
 is.proto <- function(x) inherits(x, "proto")
 
-isnot.function <- function(x) !is.function(x)
-
 #' @export
 "$.proto" <- function(x, name) {
   inherits <- substr(name, 1, 2) != ".."
