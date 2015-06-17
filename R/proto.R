@@ -350,31 +350,29 @@ is.proto <- function(x) inherits(x, "proto")
 isnot.function <- function(x) !is.function(x)
 
 #' @export
-"$.proto" <- function(this, x, args) {
-  inh <- substr(x, 1, 2) != ".."
-  p <- parent.frame()
-  res <- get(x, envir = this, inherits = inh)
-  is.function <- is.function(res)
-  is.that <- match(deparse(substitute(this)), c(".that", ".super"), nomatch = 0)
-  if (is.function && !is.that) {
-    res <- function(...) get(x, envir = this, inherits = inh)(this, ...)
-    class(res) <- c("instantiatedProtoMethod", "function")
-    attr(res, "this") <- this
-    if (!missing(args))
-      res <- do.call(res, args, envir = p)
+"$.proto" <- function(x, name) {
+  if (substr(name, 1, 2) == "..") {
+    return(x[[name]])
   }
-  res
+
+  res <- get(name, envir = x, inherits = TRUE)
+  if (!is.function(res))
+    return(res)
+
+  if (deparse(substitute(x)) %in% c(".that", ".super"))
+    return(res)
+
+  structure(
+    function(...) res(x, ...),
+    class = "protoMethod",
+    method = res
+  )
 }
 
-
-# modified from Tom Short's original
 #' @export
-print.instantiatedProtoMethod <- function(x, ...) {
-  # cat("proto method call: ")
-  # print(unclass(x))
-  cat("proto method (instantiated with ", name.proto(attr(x, "this")),
-    "): ", sep = "")
-  print(eval(body(x)[[1]]))
+print.protoMethod <- function(x, ...) {
+  cat("<ProtoMethod>\n")
+  print(attr(x, "method"), ...)
 }
 
 # modified from Tom Short's original
