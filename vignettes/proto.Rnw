@@ -64,7 +64,7 @@ and \proglang{S4}.  With the increased interest in object oriented
 programming within \proglang{R} over the last years additional object
 oriented programming packages emerged.  These include the \pkg{R.oo}
 package \citep{Bengtsson2003} and the \pkg{OOP} package
-\citep[\url{http://www.omegahat.org/OOP/}]{Rnews:Chambers+Lang:2001a}.
+\citep[\url{http://www.omegahat.net/OOP/}]{Rnews:Chambers+Lang:2001a}.
 All these packages have the common thread that they use
 classes as the basis of inheritance.  When a message is sent to an
 object the class of the object is examined and that class determines the
