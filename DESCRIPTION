@@ -13,3 +13,4 @@ License: GPL-2
 URL: https://github.com/hadley/proto
 BugReports: https://github.com/hadley/proto/issues
 Suggests: testthat
+RoxygenNote: 5.0.1.9000
