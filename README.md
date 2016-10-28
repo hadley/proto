@@ -1,7 +1,7 @@
 # Proto 
 
 [![Travis-CI Build Status](https://travis-ci.org/hadley/proto.svg?branch=master)](https://travis-ci.org/hadley/proto)
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/proto)](http://cran.r-project.org/web/packages/proto)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/proto)](https://CRAN.R-project.org/package=proto)
 [![Coverage Status](https://img.shields.io/codecov/c/github/hadley/proto/master.svg)](https://codecov.io/github/hadley/proto?branch=master)
 
 Proto is an R package that facilitates prototype
