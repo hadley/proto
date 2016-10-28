@@ -353,7 +353,7 @@ str.proto <- function(object, max.level = 1, nest.lev = 0,
                       indent.str = paste(rep.int(" ", max(0, nest.lev + 1)), collapse = ".."),
                       ...) {
   cat("proto", name.proto(object), "\n")
-  Lines <- capture.output(str(
+  Lines <- utils::capture.output(utils::str(
     as.list(object), max.level = max.level,
     nest.lev = nest.lev, ...
   ))[-1]
@@ -361,7 +361,7 @@ str.proto <- function(object, max.level = 1, nest.lev = 0,
     cat(s, "\n")
   if (is.proto(parent.env(object))) {
     cat(indent.str, "parent: ", sep = "")
-    str(parent.env(object), nest.lev = nest.lev + 1, ...)
+    utils::str(parent.env(object), nest.lev = nest.lev + 1, ...)
   }
 }
 

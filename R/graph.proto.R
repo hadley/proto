@@ -9,7 +9,7 @@ name.proto <- function(., envir = parent.frame()) {
       if (any(L))
         names(L[L])[1]
       else
-        gsub("^.* |>$", "", capture.output(print.default(.))[[1]])
+        gsub("^.* |>$", "", utils::capture.output(print.default(.))[[1]])
     }
   } else {
     e <- get(., envir)
