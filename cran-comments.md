@@ -2,8 +2,8 @@
 This fixes a number of long-standing R CMD check problems, and introduces a NAMESPACE so that proto can be more easily used without being attached to the search path.
 
 ## Test environments
-* local OS X install, R 3.2.0
-* ubuntu 12.04 (on travis-ci), R 3.2.0
+* local OS X install, R 3.3.1
+* ubuntu 12.04 (on travis-ci), R 3.3.1
 * win-builder (devel and release)
 
 ## R CMD check results
@@ -16,6 +16,9 @@ There was 1 NOTE:
   The maintainer has changed from Gabor Grothendieck to myself.
   He will send a confirmation email shortly.
 
-## Downstream dependencies
-I have also run R CMD check on downstream dependencies of proto 
-(https://github.com/hadley/proto/blob/master/revdep/summary.md). There were no new problems.
+## Reverse dependencies
+
+I ran R CMD check on all 20 reverse dependencies of proto 
+(https://github.com/hadley/proto/blob/master/revdep). 
+
+I did not see any new problems.
