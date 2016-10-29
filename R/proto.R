@@ -188,8 +188,10 @@ NULL
 #'    bias = function(., b) .$x <- .$x + b
 #' })
 #'
+#' \dontrun{
 #' debug(oo$with(rms)) # cannot use oo$rms to pass method as a value
 #' undebug(oo$with(rms)) # cannot use oo$rms to pass method as a value
+#' }
 #'
 #' oo2 <- oo$proto( location = function(.) median(.$x) )
 #' oo2$rms()      # note that first argument is omitted.
